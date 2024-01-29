@@ -336,7 +336,7 @@
   "info": {
     "description": " RPC Module Net for P2P network.",
     "title": "net_rpc",
-    "version": "0.113.0-pre"
+    "version": "0.114.0-pre"
   },
   "methods": [
     {

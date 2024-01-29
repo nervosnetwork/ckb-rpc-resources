@@ -624,7 +624,7 @@
   "info": {
     "description": " RPC Module Miner for miners.\n\n A miner gets a template from CKB, optionally selects transactions, resolves the PoW puzzle, and\n submits the found new block.",
     "title": "miner_rpc",
-    "version": "0.113.0-pre"
+    "version": "0.114.0-pre"
   },
   "methods": [
     {
