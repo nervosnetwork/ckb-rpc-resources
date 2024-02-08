@@ -356,13 +356,6 @@
       "TxPoolEntries": {
         "description": "Tx-pool entries object",
         "properties": {
-          "conflicted": {
-            "description": "Conflicted tx hash vec",
-            "items": {
-              "$ref": "#/components/schemas/H256"
-            },
-            "type": "array"
-          },
           "pending": {
             "additionalProperties": {
               "$ref": "#/components/schemas/TxPoolEntry"
@@ -379,7 +372,6 @@
           }
         },
         "required": [
-          "conflicted",
           "pending",
           "proposed"
         ],
