@@ -188,6 +188,10 @@
             "description": "The detailed status in tx-pool, `pending`, `gap`, `proposed`",
             "type": "string"
           },
+          "invalidated_tx_count": {
+            "$ref": "#/components/schemas/Uint64",
+            "description": "the invalidated transactions count"
+          },
           "pending_count": {
             "$ref": "#/components/schemas/Uint64",
             "description": "The pending(`pending` and `gap`) count"
@@ -213,6 +217,7 @@
           "ancestors_count",
           "descendants_count",
           "entry_status",
+          "invalidated_tx_count",
           "pending_count",
           "proposed_count",
           "rank_in_pending",
