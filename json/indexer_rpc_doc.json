@@ -557,7 +557,7 @@
         ]
       },
       "Uint32": {
-        "format": "uint64",
+        "format": "uint32",
         "minimum": 0.0,
         "type": "integer"
       },
