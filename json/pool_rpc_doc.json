@@ -1,11 +1,6 @@
 {
   "components": {
     "schemas": {
-      "AlertId": {
-        "format": "uint32",
-        "minimum": 0.0,
-        "type": "integer"
-      },
       "AncestorsScoreSortKey": {
         "description": "A struct as a sorted key for tx-pool",
         "properties": {
@@ -140,7 +135,7 @@
         "description": "Reference to a cell via transaction hash and output index.\n\n## Examples\n\n```\n # serde_json::from_str::<ckb_jsonrpc_types::OutPoint>(r#\"\n {\n   \"index\": \"0x0\",\n   \"tx_hash\": \"0x365698b50ca0da75dca2c87f9e7b563811d3b5813736b8cc62cc3b106faceb17\"\n }\n # \"#).unwrap();\n```",
         "properties": {
           "index": {
-            "$ref": "#/components/schemas/AlertId",
+            "$ref": "#/components/schemas/Uint32",
             "description": "The output index of the cell in the transaction specified by `tx_hash`."
           },
           "tx_hash": {
@@ -331,7 +326,7 @@
             "type": "array"
           },
           "version": {
-            "$ref": "#/components/schemas/AlertId",
+            "$ref": "#/components/schemas/Uint32",
             "description": "Reserved for future usage. It must equal 0 in current version."
           },
           "witnesses": {
@@ -511,6 +506,11 @@
           "tx_size_limit"
         ],
         "type": "object"
+      },
+      "Uint32": {
+        "format": "uint64",
+        "minimum": 0.0,
+        "type": "integer"
       },
       "Uint64": {
         "format": "uint64",
