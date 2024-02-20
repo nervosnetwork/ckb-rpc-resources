@@ -153,14 +153,14 @@
         "description": "Transaction output validators that prevent common mistakes.",
         "oneOf": [
           {
-            "description": "\"passthrough\": the default validator, bypass output checking, thus allow any kind of transaction outputs.",
+            "description": "the default validator, bypass output checking, thus allow any kind of transaction outputs.",
             "enum": [
               "passthrough"
             ],
             "type": "string"
           },
           {
-            "description": "\"well_known_scripts_only\": restricts the lock script and type script usage, see more information on <https://github.com/nervosnetwork/ckb/wiki/Transaction-%C2%BB-Default-Outputs-Validator>",
+            "description": "restricts the lock script and type script usage, see more information on <https://github.com/nervosnetwork/ckb/wiki/Transaction-%C2%BB-Default-Outputs-Validator>",
             "enum": [
               "well_known_scripts_only"
             ],
