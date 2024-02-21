@@ -1,6 +1,11 @@
 {
   "components": {
     "schemas": {
+      "AlertId": {
+        "format": "uint32",
+        "minimum": 0.0,
+        "type": "integer"
+      },
       "CellDep": {
         "additionalProperties": false,
         "description": "The cell dependency of a transaction.\n\n## Examples\n\n```\n # serde_json::from_str::<ckb_jsonrpc_types::CellDep>(r#\"\n {\n   \"dep_type\": \"code\",\n   \"out_point\": {\n     \"index\": \"0x0\",\n     \"tx_hash\": \"0xa4037a893eb48e18ed4ef61034ce26eba9c585f15c9cee102ae58505565eccc3\"\n   }\n }\n # \"#).unwrap();\n```",
@@ -133,7 +138,7 @@
         "description": "Reference to a cell via transaction hash and output index.\n\n## Examples\n\n```\n # serde_json::from_str::<ckb_jsonrpc_types::OutPoint>(r#\"\n {\n   \"index\": \"0x0\",\n   \"tx_hash\": \"0x365698b50ca0da75dca2c87f9e7b563811d3b5813736b8cc62cc3b106faceb17\"\n }\n # \"#).unwrap();\n```",
         "properties": {
           "index": {
-            "$ref": "#/components/schemas/Uint32",
+            "$ref": "#/components/schemas/AlertId",
             "description": "The output index of the cell in the transaction specified by `tx_hash`."
           },
           "tx_hash": {
@@ -244,7 +249,7 @@
             "type": "array"
           },
           "version": {
-            "$ref": "#/components/schemas/Uint32",
+            "$ref": "#/components/schemas/AlertId",
             "description": "Reserved for future usage. It must equal 0 in current version."
           },
           "witnesses": {
@@ -265,11 +270,6 @@
           "witnesses"
         ],
         "type": "object"
-      },
-      "Uint32": {
-        "format": "uint64",
-        "minimum": 0.0,
-        "type": "integer"
       },
       "Uint64": {
         "format": "uint64",

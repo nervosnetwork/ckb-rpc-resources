@@ -1,6 +1,11 @@
 {
   "components": {
     "schemas": {
+      "AlertId": {
+        "format": "uint32",
+        "minimum": 0.0,
+        "type": "integer"
+      },
       "CellOutput": {
         "additionalProperties": false,
         "description": "The fields of an output cell except the cell data.\n\n## Examples\n\n```\n # serde_json::from_str::<ckb_jsonrpc_types::CellOutput>(r#\"\n {\n   \"capacity\": \"0x2540be400\",\n   \"lock\": {\n     \"code_hash\": \"0x28e83a1277d48add8e72fadaa9248559e1b632bab2bd60b27955ebc4c03800a5\",\n     \"hash_type\": \"data\",\n     \"args\": \"0x\"\n   },\n   \"type\": null\n }\n # \"#).unwrap();\n```",
@@ -69,7 +74,7 @@
             "description": "the cell data"
           },
           "tx_index": {
-            "$ref": "#/components/schemas/Uint32",
+            "$ref": "#/components/schemas/AlertId",
             "description": "the position index of the transaction committed in the block"
           }
         },
@@ -411,7 +416,7 @@
             "description": "the number of the transaction committed in the block"
           },
           "io_index": {
-            "$ref": "#/components/schemas/Uint32",
+            "$ref": "#/components/schemas/AlertId",
             "description": "the position index of the cell in the transaction inputs or outputs"
           },
           "io_type": {
@@ -423,7 +428,7 @@
             "description": "transaction hash"
           },
           "tx_index": {
-            "$ref": "#/components/schemas/Uint32",
+            "$ref": "#/components/schemas/AlertId",
             "description": "the position index of the transaction committed in the block"
           }
         },
@@ -451,7 +456,7 @@
                   "$ref": "#/components/schemas/IndexerCellType"
                 },
                 {
-                  "$ref": "#/components/schemas/Uint32"
+                  "$ref": "#/components/schemas/AlertId"
                 }
               ],
               "maxItems": 2,
@@ -465,7 +470,7 @@
             "description": "transaction hash"
           },
           "tx_index": {
-            "$ref": "#/components/schemas/Uint32",
+            "$ref": "#/components/schemas/AlertId",
             "description": "the position index of the transaction committed in the block"
           }
         },
@@ -485,7 +490,7 @@
         "description": "Reference to a cell via transaction hash and output index.\n\n## Examples\n\n```\n # serde_json::from_str::<ckb_jsonrpc_types::OutPoint>(r#\"\n {\n   \"index\": \"0x0\",\n   \"tx_hash\": \"0x365698b50ca0da75dca2c87f9e7b563811d3b5813736b8cc62cc3b106faceb17\"\n }\n # \"#).unwrap();\n```",
         "properties": {
           "index": {
-            "$ref": "#/components/schemas/Uint32",
+            "$ref": "#/components/schemas/AlertId",
             "description": "The output index of the cell in the transaction specified by `tx_hash`."
           },
           "tx_hash": {
@@ -556,11 +561,6 @@
           }
         ]
       },
-      "Uint32": {
-        "format": "uint64",
-        "minimum": 0.0,
-        "type": "integer"
-      },
       "Uint64": {
         "format": "uint64",
         "minimum": 0.0,
@@ -611,7 +611,7 @@
         {
           "name": "limit",
           "schema": {
-            "$ref": "#/components/schemas/Uint32"
+            "$ref": "#/components/schemas/AlertId"
           }
         },
         {
@@ -654,7 +654,7 @@
         {
           "name": "limit",
           "schema": {
-            "$ref": "#/components/schemas/Uint32"
+            "$ref": "#/components/schemas/AlertId"
           }
         },
         {

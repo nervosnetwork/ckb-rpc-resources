@@ -1,11 +1,16 @@
 {
   "components": {
     "schemas": {
+      "AlertId": {
+        "format": "uint32",
+        "minimum": 0.0,
+        "type": "integer"
+      },
       "AlertMessage": {
         "description": "An alert sent by RPC `send_alert`.",
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/Uint32",
+            "$ref": "#/components/schemas/AlertId",
             "description": "The unique alert ID."
           },
           "message": {
@@ -17,7 +22,7 @@
             "description": "The alert is expired after this timestamp."
           },
           "priority": {
-            "$ref": "#/components/schemas/Uint32",
+            "$ref": "#/components/schemas/AlertId",
             "description": "Alerts are sorted by priority, highest first."
           }
         },
@@ -215,11 +220,6 @@
           "numer"
         ],
         "type": "object"
-      },
-      "Uint32": {
-        "format": "uint64",
-        "minimum": 0.0,
-        "type": "integer"
       },
       "Uint64": {
         "format": "uint64",

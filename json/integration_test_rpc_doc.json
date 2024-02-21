@@ -1,6 +1,11 @@
 {
   "components": {
     "schemas": {
+      "AlertId": {
+        "format": "uint32",
+        "minimum": 0.0,
+        "type": "integer"
+      },
       "Block": {
         "additionalProperties": false,
         "description": "The JSON view of a Block used as a parameter in the RPC.",
@@ -62,7 +67,7 @@
             "description": "Provided cellbase transaction template.\n\nMiners must use it as the cellbase transaction without changes in the assembled block."
           },
           "compact_target": {
-            "$ref": "#/components/schemas/Uint32",
+            "$ref": "#/components/schemas/AlertId",
             "description": "The compacted difficulty target for the new block.\n\nMiners must use it unchanged in the assembled block."
           },
           "current_time": {
@@ -127,7 +132,7 @@
             "description": "The uncle count limit.\n\nMiners must keep the uncles count below this limit, otherwise, the CKB node will reject the block submission."
           },
           "version": {
-            "$ref": "#/components/schemas/Uint32",
+            "$ref": "#/components/schemas/AlertId",
             "description": "Block version.\n\nMiners must use it unchanged in the assembled block."
           },
           "work_id": {
@@ -296,7 +301,7 @@
         "description": "The block header.\n\nRefer to RFC [CKB Block Structure](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0027-block-structure/0027-block-structure.md).",
         "properties": {
           "compact_target": {
-            "$ref": "#/components/schemas/Uint32",
+            "$ref": "#/components/schemas/AlertId",
             "description": "The block difficulty target.\n\nIt can be converted to a 256-bit target. Miners must ensure the Eaglesong of the header is within the target."
           },
           "dao": {
@@ -336,7 +341,7 @@
             "description": "The commitment to all the transactions in the block.\n\nIt is a hash on two Merkle Tree roots:\n\n* The root of a CKB Merkle Tree, which items are the transaction hashes of all the transactions in the block.\n* The root of a CKB Merkle Tree, but the items are the transaction witness hashes of all the transactions in the block."
           },
           "version": {
-            "$ref": "#/components/schemas/Uint32",
+            "$ref": "#/components/schemas/AlertId",
             "description": "The block version.\n\nIt must equal to 0 now and is reserved for future upgrades."
           }
         },
@@ -363,7 +368,7 @@
         "description": "Reference to a cell via transaction hash and output index.\n\n## Examples\n\n```\n # serde_json::from_str::<ckb_jsonrpc_types::OutPoint>(r#\"\n {\n   \"index\": \"0x0\",\n   \"tx_hash\": \"0x365698b50ca0da75dca2c87f9e7b563811d3b5813736b8cc62cc3b106faceb17\"\n }\n # \"#).unwrap();\n```",
         "properties": {
           "index": {
-            "$ref": "#/components/schemas/Uint32",
+            "$ref": "#/components/schemas/AlertId",
             "description": "The output index of the cell in the transaction specified by `tx_hash`."
           },
           "tx_hash": {
@@ -485,7 +490,7 @@
             "type": "array"
           },
           "version": {
-            "$ref": "#/components/schemas/Uint32",
+            "$ref": "#/components/schemas/AlertId",
             "description": "Reserved for future usage. It must equal 0 in current version."
           },
           "witnesses": {
@@ -553,11 +558,6 @@
       },
       "Uint128": {
         "format": "uint128",
-        "minimum": 0.0,
-        "type": "integer"
-      },
-      "Uint32": {
-        "format": "uint64",
         "minimum": 0.0,
         "type": "integer"
       },
