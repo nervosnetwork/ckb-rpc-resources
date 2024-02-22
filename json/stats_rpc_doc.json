@@ -168,7 +168,7 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/DeploymentInfo"
             },
-            "description": "deployments info",
+            "description": "`{ [ key:` [`DeploymentPos`](#type-deploymentpos) `]: ` [`DeploymentInfo`](#type-deploymentinfo) `}` deployments info",
             "type": "object"
           },
           "epoch": {
