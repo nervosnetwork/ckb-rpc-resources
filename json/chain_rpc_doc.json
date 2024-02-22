@@ -423,7 +423,7 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/SoftFork"
             },
-            "description": "Softforks",
+            "description": "`HashMap<DeploymentPos, SoftFork>` - Softforks",
             "type": "object"
           },
           "tx_proposal_window": {
