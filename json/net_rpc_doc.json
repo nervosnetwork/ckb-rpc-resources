@@ -39,6 +39,17 @@
         "minItems": 32,
         "type": "array"
       },
+      "H256": {
+        "description": "The 32-byte fixed-length binary data.\n\nThe name comes from the number of bits in the data.\n\nIn JSONRPC, it is encoded as a 0x-prefixed hex string.",
+        "items": {
+          "format": "uint8",
+          "minimum": 0.0,
+          "type": "integer"
+        },
+        "maxItems": 32,
+        "minItems": 32,
+        "type": "array"
+      },
       "LocalNode": {
         "description": "The information of the node itself.\n\n## Examples\n\n```\n # serde_json::from_str::<ckb_jsonrpc_types::LocalNode>(r#\"\n {\n   \"active\": true,\n   \"addresses\": [\n     {\n       \"address\": \"/ip4/192.168.0.2/tcp/8112/p2p/QmTRHCdrRtgUzYLNCin69zEvPvLYdxUZLLfLYyHVY3DZAS\",\n       \"score\": \"0xff\"\n     },\n     {\n       \"address\": \"/ip4/0.0.0.0/tcp/8112/p2p/QmTRHCdrRtgUzYLNCin69zEvPvLYdxUZLLfLYyHVY3DZAS\",\n       \"score\": \"0x1\"\n     }\n   ],\n   \"connections\": \"0xb\",\n   \"node_id\": \"QmTRHCdrRtgUzYLNCin69zEvPvLYdxUZLLfLYyHVY3DZAS\",\n   \"protocols\": [\n     {\n       \"id\": \"0x0\",\n       \"name\": \"/ckb/ping\",\n       \"support_versions\": [\n         \"0.0.1\"\n       ]\n     },\n     {\n       \"id\": \"0x1\",\n       \"name\": \"/ckb/discovery\",\n       \"support_versions\": [\n         \"0.0.1\"\n       ]\n     }\n   ],\n   \"version\": \"0.34.0 (f37f598 2020-07-17)\"\n }\n # \"#).unwrap();\n```",
         "properties": {
@@ -312,6 +323,22 @@
           "orphan_blocks_count": {
             "$ref": "#/components/schemas/Uint64",
             "description": "Count of orphan blocks the local node has downloaded.\n\nThe local node downloads multiple blocks simultaneously but blocks must be connected consecutively. If a descendant is downloaded before its ancestors, it becomes an orphan block.\n\nIf this number is too high, it indicates that block download has stuck at some block."
+          },
+          "tip_hash": {
+            "$ref": "#/components/schemas/H256",
+            "description": "The block hash of current tip block"
+          },
+          "tip_number": {
+            "$ref": "#/components/schemas/Uint64",
+            "description": "The block number of current tip block"
+          },
+          "unverified_tip_hash": {
+            "$ref": "#/components/schemas/H256",
+            "description": "The block hash of current unverified tip block"
+          },
+          "unverified_tip_number": {
+            "$ref": "#/components/schemas/Uint64",
+            "description": "The block number of current unverified tip block"
           }
         },
         "required": [
@@ -322,7 +349,11 @@
           "inflight_blocks_count",
           "low_time",
           "normal_time",
-          "orphan_blocks_count"
+          "orphan_blocks_count",
+          "tip_hash",
+          "tip_number",
+          "unverified_tip_hash",
+          "unverified_tip_number"
         ],
         "type": "object"
       },
@@ -336,7 +367,7 @@
   "info": {
     "description": " RPC Module Net for P2P network.",
     "title": "net_rpc",
-    "version": "0.114.0-pre"
+    "version": "ckb@0.114.0-pre"
   },
   "methods": [
     {
@@ -445,7 +476,7 @@
       }
     },
     {
-      "description": " Returns chain synchronization state of this node.\n\n ## Examples\n\n Request\n\n ```json\n {\n   \"id\": 42,\n   \"jsonrpc\": \"2.0\",\n   \"method\": \"sync_state\",\n   \"params\": []\n }\n ```\n\n Response\n\n ```json\n {\n   \"id\": 42,\n   \"jsonrpc\": \"2.0\",\n   \"result\": {\n     \"best_known_block_number\": \"0x400\",\n     \"best_known_block_timestamp\": \"0x5cd2b117\",\n     \"fast_time\": \"0x3e8\",\n     \"ibd\": true,\n     \"inflight_blocks_count\": \"0x0\",\n     \"low_time\": \"0x5dc\",\n     \"normal_time\": \"0x4e2\",\n     \"orphan_blocks_count\": \"0x0\"\n   }\n }\n ```",
+      "description": " Returns chain synchronization state of this node.\n\n ## Examples\n\n Request\n\n ```json\n {\n   \"id\": 42,\n   \"jsonrpc\": \"2.0\",\n   \"method\": \"sync_state\",\n   \"params\": []\n }\n ```\n\n Response\n\n ```json\n {\n   \"id\": 42,\n   \"jsonrpc\": \"2.0\",\n   \"result\": {\n     \"best_known_block_number\": \"0x400\",\n     \"best_known_block_timestamp\": \"0x5cd2b117\",\n     \"fast_time\": \"0x3e8\",\n     \"ibd\": true,\n     \"inflight_blocks_count\": \"0x0\",\n     \"low_time\": \"0x5dc\",\n     \"normal_time\": \"0x4e2\",\n     \"orphan_blocks_count\": \"0x0\",\n     \"tip_hash\": \"0xa5f5c85987a15de25661e5a214f2c1449cd803f071acc7999820f25246471f40\",\n     \"tip_number\": \"0x400\",\n     \"unverified_tip_hash\": \"0xa5f5c85987a15de25661e5a214f2c1449cd803f071acc7999820f25246471f40\",\n     \"unverified_tip_number\": \"0x400\"\n   }\n }\n ```",
       "name": "sync_state",
       "params": [],
       "result": {
