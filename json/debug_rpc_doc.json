@@ -18,28 +18,28 @@
         "description": "Runtime logger config.",
         "properties": {
           "color": {
-            "description": "Whether using color when printing the logs to the process stdout.\n\n**Optional**, null means keeping the current option unchanged.",
+            "description": "Whether using color when printing the logs to the process stdout.\n\n`null` means keeping the current option unchanged.",
             "type": [
               "boolean",
               "null"
             ]
           },
           "filter": {
-            "description": "Sets log levels for different modules.\n\n**Optional**, null means keeping the current option unchanged.\n\n## Examples\n\nSet the log level to info for all modules\n\n```text\n info\n```\n\nSet the log level to debug for listed modules and info for other modules.\n\n```text\n info,ckb-rpc=debug,ckb-sync=debug,ckb-relay=debug,ckb-tx-pool=debug,ckb-network=debug\n```",
+            "description": "Sets log levels for different modules.\n\n`null` means keeping the current option unchanged.\n\n## Examples\n\nSet the log level to info for all modules\n\n```text\n info\n```\n\nSet the log level to debug for listed modules and info for other modules.\n\n```text\n info,ckb-rpc=debug,ckb-sync=debug,ckb-relay=debug,ckb-tx-pool=debug,ckb-network=debug\n```",
             "type": [
               "string",
               "null"
             ]
           },
           "to_file": {
-            "description": "Whether appending the logs to the log file.\n\n**Optional**, null means keeping the current option unchanged.",
+            "description": "Whether appending the logs to the log file.\n\n`null` means keeping the current option unchanged.",
             "type": [
               "boolean",
               "null"
             ]
           },
           "to_stdout": {
-            "description": "Whether printing the logs to the process stdout.\n\n**Optional**, null means keeping the current option unchanged.",
+            "description": "Whether printing the logs to the process stdout.\n\n`null` means keeping the current option unchanged.",
             "type": [
               "boolean",
               "null"
@@ -53,7 +53,7 @@
   "info": {
     "description": " RPC Module Debug for internal RPC methods.\n\n **This module is for CKB developers and will not guarantee compatibility.** The methods here\n will be changed or removed without advanced notification.",
     "title": "debug_rpc",
-    "version": "0.114.0-pre"
+    "version": "0.115.0-pre"
   },
   "methods": [
     {
