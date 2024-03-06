@@ -571,7 +571,7 @@
   "info": {
     "description": " RPC Module Indexer.",
     "title": "indexer_rpc",
-    "version": "ckb@0.115.0-pre"
+    "version": "0.115.0-pre"
   },
   "methods": [
     {

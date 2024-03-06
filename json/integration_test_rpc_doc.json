@@ -624,7 +624,7 @@
   "info": {
     "description": " RPC for Integration Test.",
     "title": "integration_test_rpc",
-    "version": "ckb@0.115.0-pre"
+    "version": "0.115.0-pre"
   },
   "methods": [
     {

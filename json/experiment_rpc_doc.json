@@ -281,7 +281,7 @@
   "info": {
     "description": " RPC Module Experiment for experimenting methods.\n\n **EXPERIMENTAL warning**\n\n The methods here may be removed or changed in future releases without prior notifications.",
     "title": "experiment_rpc",
-    "version": "ckb@0.115.0-pre"
+    "version": "0.115.0-pre"
   },
   "methods": [
     {
