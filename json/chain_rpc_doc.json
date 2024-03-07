@@ -1318,7 +1318,7 @@
   "info": {
     "description": " RPC Module Chain for methods related to the canonical chain.\n\n This module queries information about the canonical chain.\n\n ## Canonical Chain\n\n A canonical chain is the one with the most accumulated work. The accumulated work is\n the sum of difficulties of all the blocks in the chain.\n\n ## Chain Reorganization\n\n Chain Reorganization happens when CKB found a chain that has accumulated more work than the\n canonical chain. The reorganization revert the blocks in the current canonical chain if needed,\n and switch the canonical chain to that better chain.\n\n ## Live Cell\n\n A cell is live if\n\n * it is found as an output in any transaction in the [canonical chain](#canonical-chain),\n and\n * it is not found as an input in any transaction in the canonical chain.",
     "title": "chain_rpc",
-    "version": "0.114.0-pre"
+    "version": "0.115.0-pre"
   },
   "methods": [
     {
