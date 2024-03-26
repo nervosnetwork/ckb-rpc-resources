@@ -312,6 +312,10 @@
           "orphan_blocks_count": {
             "$ref": "#/components/schemas/Uint64",
             "description": "Count of orphan blocks the local node has downloaded.\n\nThe local node downloads multiple blocks simultaneously but blocks must be connected consecutively. If a descendant is downloaded before its ancestors, it becomes an orphan block.\n\nIf this number is too high, it indicates that block download has stuck at some block."
+          },
+          "orphan_blocks_size": {
+            "$ref": "#/components/schemas/Uint64",
+            "description": "The size of all download orphan blocks"
           }
         },
         "required": [
@@ -322,7 +326,8 @@
           "inflight_blocks_count",
           "low_time",
           "normal_time",
-          "orphan_blocks_count"
+          "orphan_blocks_count",
+          "orphan_blocks_size"
         ],
         "type": "object"
       },
@@ -445,7 +450,7 @@
       }
     },
     {
-      "description": " Returns chain synchronization state of this node.\n\n ## Examples\n\n Request\n\n ```json\n {\n   \"id\": 42,\n   \"jsonrpc\": \"2.0\",\n   \"method\": \"sync_state\",\n   \"params\": []\n }\n ```\n\n Response\n\n ```json\n {\n   \"id\": 42,\n   \"jsonrpc\": \"2.0\",\n   \"result\": {\n     \"best_known_block_number\": \"0x400\",\n     \"best_known_block_timestamp\": \"0x5cd2b117\",\n     \"fast_time\": \"0x3e8\",\n     \"ibd\": true,\n     \"inflight_blocks_count\": \"0x0\",\n     \"low_time\": \"0x5dc\",\n     \"normal_time\": \"0x4e2\",\n     \"orphan_blocks_count\": \"0x0\"\n   }\n }\n ```",
+      "description": " Returns chain synchronization state of this node.\n\n ## Examples\n\n Request\n\n ```json\n {\n   \"id\": 42,\n   \"jsonrpc\": \"2.0\",\n   \"method\": \"sync_state\",\n   \"params\": []\n }\n ```\n\n Response\n\n ```json\n {\n   \"id\": 42,\n   \"jsonrpc\": \"2.0\",\n   \"result\": {\n     \"best_known_block_number\": \"0x400\",\n     \"best_known_block_timestamp\": \"0x5cd2b117\",\n     \"fast_time\": \"0x3e8\",\n     \"ibd\": true,\n     \"inflight_blocks_count\": \"0x0\",\n     \"low_time\": \"0x5dc\",\n     \"normal_time\": \"0x4e2\",\n     \"orphan_blocks_count\": \"0x0\",\n     \"orphan_blocks_size\": \"0x0\"\n   }\n }\n ```",
       "name": "sync_state",
       "params": [],
       "result": {

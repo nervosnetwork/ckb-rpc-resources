@@ -1,11 +1,6 @@
 {
   "components": {
     "schemas": {
-      "AlertId": {
-        "format": "uint32",
-        "minimum": 0.0,
-        "type": "integer"
-      },
       "CellOutput": {
         "additionalProperties": false,
         "description": "The fields of an output cell except the cell data.\n\n## Examples\n\n```\n # serde_json::from_str::<ckb_jsonrpc_types::CellOutput>(r#\"\n {\n   \"capacity\": \"0x2540be400\",\n   \"lock\": {\n     \"code_hash\": \"0x28e83a1277d48add8e72fadaa9248559e1b632bab2bd60b27955ebc4c03800a5\",\n     \"hash_type\": \"data\",\n     \"args\": \"0x\"\n   },\n   \"type\": null\n }\n # \"#).unwrap();\n```",
@@ -74,7 +69,7 @@
             "description": "the cell data"
           },
           "tx_index": {
-            "$ref": "#/components/schemas/AlertId",
+            "$ref": "#/components/schemas/Uint32",
             "description": "the position index of the transaction committed in the block"
           }
         },
@@ -189,6 +184,23 @@
         ],
         "type": "object"
       },
+      "IndexerRange": {
+        "description": "A array represent (half-open) range bounded inclusively below and exclusively above [start, end).\n\n## Examples\n\n|            JSON          |            range             |\n| -------------------------| ---------------------------- |\n| [\"0x0\", \"0x2\"]           |          [0, 2)              |\n| [\"0x0\", \"0x174876e801\"]  |          [0, 100000000001)   |",
+        "properties": {
+          "inner": {
+            "items": {
+              "$ref": "#/components/schemas/Uint64"
+            },
+            "maxItems": 2,
+            "minItems": 2,
+            "type": "array"
+          }
+        },
+        "required": [
+          "inner"
+        ],
+        "type": "object"
+      },
       "IndexerScriptType": {
         "description": "ScriptType `Lock` | `Type`",
         "oneOf": [
@@ -266,28 +278,26 @@
         "description": "IndexerSearchKeyFilter represent indexer params `filter`",
         "properties": {
           "block_range": {
-            "description": "filter cells by block number range",
-            "items": {
-              "$ref": "#/components/schemas/Uint64"
-            },
-            "maxItems": 2,
-            "minItems": 2,
-            "type": [
-              "array",
-              "null"
-            ]
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IndexerRange"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "filter cells by block number range"
           },
           "output_capacity_range": {
-            "description": "filter cells by output capacity range",
-            "items": {
-              "$ref": "#/components/schemas/Uint64"
-            },
-            "maxItems": 2,
-            "minItems": 2,
-            "type": [
-              "array",
-              "null"
-            ]
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IndexerRange"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "filter cells by output capacity range"
           },
           "output_data": {
             "anyOf": [
@@ -312,16 +322,15 @@
             "description": "output data filter mode, optional default is `prefix`"
           },
           "output_data_len_range": {
-            "description": "filter cells by output data len range",
-            "items": {
-              "$ref": "#/components/schemas/Uint64"
-            },
-            "maxItems": 2,
-            "minItems": 2,
-            "type": [
-              "array",
-              "null"
-            ]
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IndexerRange"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "filter cells by output data len range"
           },
           "script": {
             "anyOf": [
@@ -335,16 +344,15 @@
             "description": "if search script type is lock, filter cells by type script prefix, and vice versa"
           },
           "script_len_range": {
-            "description": "filter cells by script len range",
-            "items": {
-              "$ref": "#/components/schemas/Uint64"
-            },
-            "maxItems": 2,
-            "minItems": 2,
-            "type": [
-              "array",
-              "null"
-            ]
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IndexerRange"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "filter cells by script len range"
           }
         },
         "type": "object"
@@ -416,7 +424,7 @@
             "description": "the number of the transaction committed in the block"
           },
           "io_index": {
-            "$ref": "#/components/schemas/AlertId",
+            "$ref": "#/components/schemas/Uint32",
             "description": "the position index of the cell in the transaction inputs or outputs"
           },
           "io_type": {
@@ -428,7 +436,7 @@
             "description": "transaction hash"
           },
           "tx_index": {
-            "$ref": "#/components/schemas/AlertId",
+            "$ref": "#/components/schemas/Uint32",
             "description": "the position index of the transaction committed in the block"
           }
         },
@@ -456,7 +464,7 @@
                   "$ref": "#/components/schemas/IndexerCellType"
                 },
                 {
-                  "$ref": "#/components/schemas/AlertId"
+                  "$ref": "#/components/schemas/Uint32"
                 }
               ],
               "maxItems": 2,
@@ -470,7 +478,7 @@
             "description": "transaction hash"
           },
           "tx_index": {
-            "$ref": "#/components/schemas/AlertId",
+            "$ref": "#/components/schemas/Uint32",
             "description": "the position index of the transaction committed in the block"
           }
         },
@@ -490,7 +498,7 @@
         "description": "Reference to a cell via transaction hash and output index.\n\n## Examples\n\n```\n # serde_json::from_str::<ckb_jsonrpc_types::OutPoint>(r#\"\n {\n   \"index\": \"0x0\",\n   \"tx_hash\": \"0x365698b50ca0da75dca2c87f9e7b563811d3b5813736b8cc62cc3b106faceb17\"\n }\n # \"#).unwrap();\n```",
         "properties": {
           "index": {
-            "$ref": "#/components/schemas/AlertId",
+            "$ref": "#/components/schemas/Uint32",
             "description": "The output index of the cell in the transaction specified by `tx_hash`."
           },
           "tx_hash": {
@@ -561,6 +569,11 @@
           }
         ]
       },
+      "Uint32": {
+        "format": "uint32",
+        "minimum": 0.0,
+        "type": "integer"
+      },
       "Uint64": {
         "format": "uint64",
         "minimum": 0.0,
@@ -571,11 +584,11 @@
   "info": {
     "description": " RPC Module Rich Indexer.",
     "title": "rich_indexer_rpc",
-    "version": "0.114.0-pre"
+    "version": "0.115.0-pre"
   },
   "methods": [
     {
-      "description": " Returns the indexed tip\n\n ## Returns\n   * block_hash - indexed tip block hash\n   * block_number - indexed tip block number\n\n ## Examples\n\n Same as CKB Indexer.",
+      "description": " Returns the indexed tip.\n\n ## Returns\n   * block_hash - indexed tip block hash\n   * block_number - indexed tip block number\n\n ## Examples\n\n Same as CKB Indexer.",
       "name": "get_indexer_tip",
       "params": [],
       "result": {
@@ -593,7 +606,7 @@
       }
     },
     {
-      "description": " Returns the live cells collection by the lock or type script.\n\n ## Params\n\n * search_key:\n     - script - Script, supports prefix search\n     - script_type - enum, lock | type\n     - script_search_mode - enum, prefix | exact | partial\n     - filter - filter cells by following conditions, all conditions are optional\n          - script: if search script type is lock, filter cells by type script prefix, and vice versa\n          - script_len_range: [u64; 2], filter cells by script len range, [inclusive, exclusive]\n          - output_data: filter cells by output data\n          - output_data_filter_mode: enum, prefix | exact | partial\n          - output_data_len_range: [u64; 2], filter cells by output data len range, [inclusive, exclusive]\n          - output_capacity_range: [u64; 2], filter cells by output capacity range, [inclusive, exclusive]\n          - block_range: [u64; 2], filter cells by block number range, [inclusive, exclusive]\n     - with_data - bool, optional default is `true`, if with_data is set to false, the field of returning cell.output_data is null in the result\n * order: enum, asc | desc\n * limit: result size limit\n * after: pagination parameter, optional\n\n ## Returns\n\n If the number of objects is less than the requested `limit`, it indicates that these are the last page of get_cells.\n\n * objects:\n     - output: the fields of an output cell\n     - output_data: the cell data\n     - out_point: reference to a cell via transaction hash and output index\n     - block_number: the number of the transaction committed in the block\n     - tx_index: the position index of the transaction committed in the block\n * last_cursor: pagination parameter\n\n ## Examples\n\n Same as CKB Indexer.",
+      "description": " Returns the live cells collection by the lock or type script.\n\n The difference from the original CKB Indexer is that the `script_search_mode` parameter accepts the `partial` enumeration value. This implies that a partial search can be conducted on the `args` of the `script`.\n\n ## Params\n\n * search_key:\n     - script - Script, supports prefix search\n     - script_type - enum, lock | type\n     - script_search_mode - enum, prefix | exact | partial\n     - filter - filter cells by following conditions, all conditions are optional\n          - script: if search script type is lock, filter cells by type script prefix, and vice versa\n          - script_len_range: [u64; 2], filter cells by script len range, [inclusive, exclusive]\n          - output_data: filter cells by output data\n          - output_data_filter_mode: enum, prefix | exact | partial\n          - output_data_len_range: [u64; 2], filter cells by output data len range, [inclusive, exclusive]\n          - output_capacity_range: [u64; 2], filter cells by output capacity range, [inclusive, exclusive]\n          - block_range: [u64; 2], filter cells by block number range, [inclusive, exclusive]\n     - with_data - bool, optional default is `true`, if with_data is set to false, the field of returning cell.output_data is null in the result\n * order: enum, asc | desc\n * limit: result size limit\n * after: pagination parameter, optional\n\n ## Returns\n\n If the number of objects is less than the requested `limit`, it indicates that these are the last page of get_cells.\n\n * objects:\n     - output: the fields of an output cell\n     - output_data: the cell data\n     - out_point: reference to a cell via transaction hash and output index\n     - block_number: the number of the transaction committed in the block\n     - tx_index: the position index of the transaction committed in the block\n * last_cursor: pagination parameter\n\n ## Examples\n\n Same as CKB Indexer.",
       "name": "get_cells",
       "params": [
         {
@@ -611,7 +624,7 @@
         {
           "name": "limit",
           "schema": {
-            "$ref": "#/components/schemas/AlertId"
+            "$ref": "#/components/schemas/Uint32"
           }
         },
         {
@@ -636,7 +649,7 @@
       }
     },
     {
-      "description": " Returns the transactions collection by the lock or type script.\n\n * search_key:\n     - script - Script, supports prefix search when group_by_transaction is false\n     - script_type - enum, lock | type\n     - script_search_mode - enum, prefix | exact | partial\n     - filter - filter cells by following conditions, all conditions are optional\n         - script: if search script type is lock, filter cells by type script, and vice versa\n         - script_len_range: [u64; 2], filter cells by script len range, [inclusive, exclusive]\n         - output_data: filter cells by output data\n         - output_data_filter_mode: enum, prefix | exact | partial\n         - output_data_len_range: [u64; 2], filter cells by output data len range, [inclusive, exclusive]\n         - output_capacity_range: [u64; 2], filter cells by output capacity range, [inclusive, exclusive]\n         - block_range: [u64; 2], filter cells by block number range, [inclusive, exclusive]\n     - group_by_transaction - bool, optional default is `false`, if group_by_transaction is set to true, the returning objects will be grouped by the tx hash\n * order: enum, asc | desc\n * limit: result size limit\n * after: pagination parameter, optional\n\n ## Returns\n\n If the number of objects is less than the requested `limit`, it indicates that these are the last page of get_transactions.\n\n  * objects - enum, ungrouped TxWithCell | grouped TxWithCells\n     - TxWithCell:\n         - tx_hash: transaction hash,\n         - block_number: the number of the transaction committed in the block\n         - tx_index: the position index of the transaction committed in the block\n         - io_type: enum, input | output\n         - io_index: the position index of the cell in the transaction inputs or outputs\n     - TxWithCells:\n         - tx_hash: transaction hash,\n         - block_number: the number of the transaction committed in the block\n         - tx_index: the position index of the transaction committed in the block\n         - cells: Array [[io_type, io_index]]\n  * last_cursor - pagination parameter\n\n ## Examples\n\n Same as CKB Indexer.",
+      "description": " Returns the transactions collection by the lock or type script.\n\n The difference from the original CKB Indexer is that both the `script_search_mode` and `output_data_filter_mode` in `filter` can accept the `partial` enumeration value. This implies that a partial search can be conducted on both the `args` of the `script` and the cell `output_data`.\n\n * search_key:\n     - script - Script, supports prefix search when group_by_transaction is false\n     - script_type - enum, lock | type\n     - script_search_mode - enum, prefix | exact | partial\n     - filter - filter cells by following conditions, all conditions are optional\n         - script: if search script type is lock, filter cells by type script, and vice versa\n         - script_len_range: [u64; 2], filter cells by script len range, [inclusive, exclusive]\n         - output_data: filter cells by output data\n         - output_data_filter_mode: enum, prefix | exact | partial\n         - output_data_len_range: [u64; 2], filter cells by output data len range, [inclusive, exclusive]\n         - output_capacity_range: [u64; 2], filter cells by output capacity range, [inclusive, exclusive]\n         - block_range: [u64; 2], filter cells by block number range, [inclusive, exclusive]\n     - group_by_transaction - bool, optional default is `false`, if group_by_transaction is set to true, the returning objects will be grouped by the tx hash\n * order: enum, asc | desc\n * limit: result size limit\n * after: pagination parameter, optional\n\n ## Returns\n\n If the number of objects is less than the requested `limit`, it indicates that these are the last page of get_transactions.\n\n  * objects - enum, ungrouped TxWithCell | grouped TxWithCells\n     - TxWithCell:\n         - tx_hash: transaction hash,\n         - block_number: the number of the transaction committed in the block\n         - tx_index: the position index of the transaction committed in the block\n         - io_type: enum, input | output\n         - io_index: the position index of the cell in the transaction inputs or outputs\n     - TxWithCells:\n         - tx_hash: transaction hash,\n         - block_number: the number of the transaction committed in the block\n         - tx_index: the position index of the transaction committed in the block\n         - cells: Array [[io_type, io_index]]\n  * last_cursor - pagination parameter\n\n ## Examples\n\n Same as CKB Indexer.",
       "name": "get_transactions",
       "params": [
         {
@@ -654,7 +667,7 @@
         {
           "name": "limit",
           "schema": {
-            "$ref": "#/components/schemas/AlertId"
+            "$ref": "#/components/schemas/Uint32"
           }
         },
         {
@@ -679,7 +692,7 @@
       }
     },
     {
-      "description": " Returns the live cells capacity by the lock or type script.\n\n ## Parameters\n\n * search_key:\n     - script - Script\n     - script_type - enum, lock | type\n     - script_search_mode - enum, prefix | exact | partial\n     - filter - filter cells by following conditions, all conditions are optional\n         - script: if search script type is lock, filter cells by type script prefix, and vice versa\n         - script_len_range: [u64; 2], filter cells by script len range, [inclusive, exclusive]\n         - output_data: filter cells by output data\n         - output_data_filter_mode: enum, prefix | exact | partial\n         - output_data_len_range: [u64; 2], filter cells by output data len range, [inclusive, exclusive]\n         - output_capacity_range: [u64; 2], filter cells by output capacity range, [inclusive, exclusive]\n         - block_range: [u64; 2], filter cells by block number range, [inclusive, exclusive]\n\n ## Returns\n\n  * capacity - total capacity\n  * block_hash - indexed tip block hash\n  * block_number - indexed tip block number\n\n ## Examples\n\n Same as CKB Indexer.",
+      "description": " Returns the live cells capacity by the lock or type script.\n\n The difference from the original CKB Indexer is that the `script_search_mode` parameter accepts the `partial` enumeration value. This implies that a partial search can be conducted on the `args` of the `script`.\n\n ## Parameters\n\n * search_key:\n     - script - Script\n     - script_type - enum, lock | type\n     - script_search_mode - enum, prefix | exact | partial\n     - filter - filter cells by following conditions, all conditions are optional\n         - script: if search script type is lock, filter cells by type script prefix, and vice versa\n         - script_len_range: [u64; 2], filter cells by script len range, [inclusive, exclusive]\n         - output_data: filter cells by output data\n         - output_data_filter_mode: enum, prefix | exact | partial\n         - output_data_len_range: [u64; 2], filter cells by output data len range, [inclusive, exclusive]\n         - output_capacity_range: [u64; 2], filter cells by output capacity range, [inclusive, exclusive]\n         - block_range: [u64; 2], filter cells by block number range, [inclusive, exclusive]\n\n ## Returns\n\n  * capacity - total capacity\n  * block_hash - indexed tip block hash\n  * block_number - indexed tip block number\n\n ## Examples\n\n Same as CKB Indexer.",
       "name": "get_cells_capacity",
       "params": [
         {

@@ -184,6 +184,23 @@
         ],
         "type": "object"
       },
+      "IndexerRange": {
+        "description": "A array represent (half-open) range bounded inclusively below and exclusively above [start, end).\n\n## Examples\n\n|            JSON          |            range             |\n| -------------------------| ---------------------------- |\n| [\"0x0\", \"0x2\"]           |          [0, 2)              |\n| [\"0x0\", \"0x174876e801\"]  |          [0, 100000000001)   |",
+        "properties": {
+          "inner": {
+            "items": {
+              "$ref": "#/components/schemas/Uint64"
+            },
+            "maxItems": 2,
+            "minItems": 2,
+            "type": "array"
+          }
+        },
+        "required": [
+          "inner"
+        ],
+        "type": "object"
+      },
       "IndexerScriptType": {
         "description": "ScriptType `Lock` | `Type`",
         "oneOf": [
@@ -261,28 +278,26 @@
         "description": "IndexerSearchKeyFilter represent indexer params `filter`",
         "properties": {
           "block_range": {
-            "description": "filter cells by block number range",
-            "items": {
-              "$ref": "#/components/schemas/Uint64"
-            },
-            "maxItems": 2,
-            "minItems": 2,
-            "type": [
-              "array",
-              "null"
-            ]
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IndexerRange"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "filter cells by block number range"
           },
           "output_capacity_range": {
-            "description": "filter cells by output capacity range",
-            "items": {
-              "$ref": "#/components/schemas/Uint64"
-            },
-            "maxItems": 2,
-            "minItems": 2,
-            "type": [
-              "array",
-              "null"
-            ]
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IndexerRange"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "filter cells by output capacity range"
           },
           "output_data": {
             "anyOf": [
@@ -307,16 +322,15 @@
             "description": "output data filter mode, optional default is `prefix`"
           },
           "output_data_len_range": {
-            "description": "filter cells by output data len range",
-            "items": {
-              "$ref": "#/components/schemas/Uint64"
-            },
-            "maxItems": 2,
-            "minItems": 2,
-            "type": [
-              "array",
-              "null"
-            ]
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IndexerRange"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "filter cells by output data len range"
           },
           "script": {
             "anyOf": [
@@ -330,16 +344,15 @@
             "description": "if search script type is lock, filter cells by type script prefix, and vice versa"
           },
           "script_len_range": {
-            "description": "filter cells by script len range",
-            "items": {
-              "$ref": "#/components/schemas/Uint64"
-            },
-            "maxItems": 2,
-            "minItems": 2,
-            "type": [
-              "array",
-              "null"
-            ]
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IndexerRange"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "filter cells by script len range"
           }
         },
         "type": "object"

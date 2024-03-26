@@ -351,6 +351,13 @@
       "TxPoolEntries": {
         "description": "Tx-pool entries object",
         "properties": {
+          "conflicted": {
+            "description": "Conflicted tx hash vec",
+            "items": {
+              "$ref": "#/components/schemas/H256"
+            },
+            "type": "array"
+          },
           "pending": {
             "additionalProperties": {
               "$ref": "#/components/schemas/TxPoolEntry"
@@ -367,6 +374,7 @@
           }
         },
         "required": [
+          "conflicted",
           "pending",
           "proposed"
         ],
@@ -597,7 +605,7 @@
       }
     },
     {
-      "description": " Returns all transaction ids in tx pool as a json array of string transaction ids.\n ## Params\n\n * `verbose` - True for a json object, false for array of transaction ids, default=false\n\n ## Examples\n\n Request\n\n ```json\n {\n   \"id\": 42,\n   \"jsonrpc\": \"2.0\",\n   \"method\": \"get_raw_tx_pool\",\n   \"params\": [true]\n }\n ```\n\n Response\n\n ```json\n {\n   \"id\": 42,\n   \"jsonrpc\": \"2.0\",\n   \"result\":\n    {\n        \"pending\": {\n            \"0xa0ef4eb5f4ceeb08a4c8524d84c5da95dce2f608e0ca2ec8091191b0f330c6e3\": {\n                \"cycles\": \"0x219\",\n                \"size\": \"0x112\",\n                \"fee\": \"0x16923f7dcf\",\n                \"ancestors_size\": \"0x112\",\n                \"ancestors_cycles\": \"0x219\",\n                \"ancestors_count\": \"0x1\",\n                \"timestamp\": \"0x17c983e6e44\"\n            }\n        },\n        \"proposed\": {}\n    }\n }\n ```",
+      "description": " Returns all transaction ids in tx pool as a json array of string transaction ids.\n ## Params\n\n * `verbose` - True for a json object, false for array of transaction ids, default=false\n\n ## Examples\n\n Request\n\n ```json\n {\n   \"id\": 42,\n   \"jsonrpc\": \"2.0\",\n   \"method\": \"get_raw_tx_pool\",\n   \"params\": [true]\n }\n ```\n\n Response\n\n ```json\n {\n   \"id\": 42,\n   \"jsonrpc\": \"2.0\",\n   \"result\":\n    {\n        \"pending\": {\n            \"0xa0ef4eb5f4ceeb08a4c8524d84c5da95dce2f608e0ca2ec8091191b0f330c6e3\": {\n                \"cycles\": \"0x219\",\n                \"size\": \"0x112\",\n                \"fee\": \"0x16923f7dcf\",\n                \"ancestors_size\": \"0x112\",\n                \"ancestors_cycles\": \"0x219\",\n                \"ancestors_count\": \"0x1\",\n                \"timestamp\": \"0x17c983e6e44\"\n            }\n        },\n        \"conflicted\": [],\n        \"proposed\": {}\n    }\n }\n ```",
       "name": "get_raw_tx_pool",
       "params": [
         {

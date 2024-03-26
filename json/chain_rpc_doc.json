@@ -68,7 +68,7 @@
       "BlockResponse": {
         "anyOf": [
           {
-            "$ref": "#/components/schemas/Either_for_BlockView_and_JsonBytes",
+            "$ref": "#/components/schemas/ResponseFormat_for_BlockView",
             "description": "The block response regular format\n\n[`BlockView`] | [\\`SerializedBlock\\`](#type-serializedblock) - The block structure"
           },
           {
@@ -130,7 +130,7 @@
         "description": "BlockResponse with cycles format wrapper",
         "properties": {
           "block": {
-            "$ref": "#/components/schemas/Either_for_BlockView_and_JsonBytes",
+            "$ref": "#/components/schemas/ResponseFormat_for_BlockView",
             "description": "The block structure"
           },
           "cycles": {
@@ -341,11 +341,8 @@
             "description": "The genesis block hash"
           },
           "hardfork_features": {
-            "description": "Hardfork features",
-            "items": {
-              "$ref": "#/components/schemas/HardForkFeature"
-            },
-            "type": "array"
+            "$ref": "#/components/schemas/HardForks",
+            "description": "Hardfork features"
           },
           "id": {
             "description": "Names the network.",
@@ -657,6 +654,21 @@
         ],
         "type": "object"
       },
+      "HardForks": {
+        "description": "Hardfork information",
+        "properties": {
+          "inner": {
+            "items": {
+              "$ref": "#/components/schemas/HardForkFeature"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "inner"
+        ],
+        "type": "object"
+      },
       "HeaderView": {
         "description": "The JSON view of a Header.\n\nThis structure is serialized into a JSON object with field `hash` and all the fields in\n[`Header`](struct.Header.html).\n\n## Examples\n\n```\n # serde_json::from_str::<ckb_jsonrpc_types::HeaderView>(r#\"\n {\n   \"compact_target\": \"0x1e083126\",\n   \"dao\": \"0xb5a3e047474401001bc476b9ee573000c0c387962a38000000febffacf030000\",\n   \"epoch\": \"0x7080018000001\",\n   \"hash\": \"0xa5f5c85987a15de25661e5a214f2c1449cd803f071acc7999820f25246471f40\",\n   \"nonce\": \"0x0\",\n   \"number\": \"0x400\",\n   \"parent_hash\": \"0xae003585fa15309b30b31aed3dcf385e9472c3c3e93746a6c4540629a6a1ed2d\",\n   \"proposals_hash\": \"0x0000000000000000000000000000000000000000000000000000000000000000\",\n   \"timestamp\": \"0x5cd2b117\",\n   \"transactions_root\": \"0xc47d5b78b3c4c4c853e2a32810818940d0ee403423bea9ec7b8e566d9595206c\",\n   \"extra_hash\": \"0x0000000000000000000000000000000000000000000000000000000000000000\",\n   \"version\": \"0x0\"\n }\n # \"#).unwrap();\n```",
         "properties": {
@@ -843,6 +855,45 @@
         "required": [
           "denom",
           "numer"
+        ],
+        "type": "object"
+      },
+      "ResponseFormat_for_BlockView": {
+        "description": "This is a wrapper for JSON serialization to select the format between Json and Hex.\n\n## Examples\n\n`ResponseFormat<BlockView>` returns the block in its Json format or molecule serialized Hex format.",
+        "properties": {
+          "inner": {
+            "$ref": "#/components/schemas/Either_for_BlockView_and_JsonBytes",
+            "description": "The inner value."
+          }
+        },
+        "required": [
+          "inner"
+        ],
+        "type": "object"
+      },
+      "ResponseFormat_for_HeaderView": {
+        "description": "This is a wrapper for JSON serialization to select the format between Json and Hex.\n\n## Examples\n\n`ResponseFormat<BlockView>` returns the block in its Json format or molecule serialized Hex format.",
+        "properties": {
+          "inner": {
+            "$ref": "#/components/schemas/Either_for_HeaderView_and_JsonBytes",
+            "description": "The inner value."
+          }
+        },
+        "required": [
+          "inner"
+        ],
+        "type": "object"
+      },
+      "ResponseFormat_for_TransactionView": {
+        "description": "This is a wrapper for JSON serialization to select the format between Json and Hex.\n\n## Examples\n\n`ResponseFormat<BlockView>` returns the block in its Json format or molecule serialized Hex format.",
+        "properties": {
+          "inner": {
+            "$ref": "#/components/schemas/Either_for_TransactionView_and_JsonBytes",
+            "description": "The inner value."
+          }
+        },
+        "required": [
+          "inner"
         ],
         "type": "object"
       },
@@ -1217,7 +1268,7 @@
           "transaction": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/Either_for_TransactionView_and_JsonBytes"
+                "$ref": "#/components/schemas/ResponseFormat_for_TransactionView"
               },
               {
                 "type": "null"
@@ -1444,7 +1495,7 @@
         "schema": {
           "anyOf": [
             {
-              "$ref": "#/components/schemas/Either_for_HeaderView_and_JsonBytes"
+              "$ref": "#/components/schemas/ResponseFormat_for_HeaderView"
             },
             {
               "type": "null"
@@ -1482,7 +1533,7 @@
         "schema": {
           "anyOf": [
             {
-              "$ref": "#/components/schemas/Either_for_HeaderView_and_JsonBytes"
+              "$ref": "#/components/schemas/ResponseFormat_for_HeaderView"
             },
             {
               "type": "null"
@@ -1602,7 +1653,7 @@
       "result": {
         "name": "get_tip_header",
         "schema": {
-          "$ref": "#/components/schemas/Either_for_HeaderView_and_JsonBytes"
+          "$ref": "#/components/schemas/ResponseFormat_for_HeaderView"
         }
       }
     },
@@ -1841,7 +1892,7 @@
         "schema": {
           "anyOf": [
             {
-              "$ref": "#/components/schemas/Either_for_BlockView_and_JsonBytes"
+              "$ref": "#/components/schemas/ResponseFormat_for_BlockView"
             },
             {
               "type": "null"
