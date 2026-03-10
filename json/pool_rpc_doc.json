@@ -5,78 +5,118 @@
         "description": "A struct as a sorted key for tx-pool",
         "properties": {
           "ancestors_fee": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "Ancestors fee"
           },
           "ancestors_weight": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "Ancestors weight"
           },
           "fee": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "Fee"
           },
           "weight": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "Weight"
           }
         },
         "required": [
-          "ancestors_fee",
-          "ancestors_weight",
           "fee",
-          "weight"
+          "weight",
+          "ancestors_fee",
+          "ancestors_weight"
         ],
         "type": "object"
       },
       "CellDep": {
         "additionalProperties": false,
-        "description": "The cell dependency of a transaction.\n\n## Examples\n\n```\n # serde_json::from_str::<ckb_jsonrpc_types::CellDep>(r#\"\n {\n   \"dep_type\": \"code\",\n   \"out_point\": {\n     \"index\": \"0x0\",\n     \"tx_hash\": \"0xa4037a893eb48e18ed4ef61034ce26eba9c585f15c9cee102ae58505565eccc3\"\n   }\n }\n # \"#).unwrap();\n```",
+        "description": "The cell dependency of a transaction.\n\n## Examples\n\n```\n# serde_json::from_str::<ckb_jsonrpc_types::CellDep>(r#\"\n{\n  \"dep_type\": \"code\",\n  \"out_point\": {\n    \"index\": \"0x0\",\n    \"tx_hash\": \"0xa4037a893eb48e18ed4ef61034ce26eba9c585f15c9cee102ae58505565eccc3\"\n  }\n}\n# \"#).unwrap();\n```",
         "properties": {
           "dep_type": {
-            "$ref": "#/components/schemas/DepType",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DepType"
+              }
+            ],
             "description": "Dependency type."
           },
           "out_point": {
-            "$ref": "#/components/schemas/OutPoint",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/OutPoint"
+              }
+            ],
             "description": "Reference to the cell."
           }
         },
         "required": [
-          "dep_type",
-          "out_point"
+          "out_point",
+          "dep_type"
         ],
         "type": "object"
       },
       "CellInput": {
         "additionalProperties": false,
-        "description": "The input cell of a transaction.\n\n## Examples\n\n```\n # serde_json::from_str::<ckb_jsonrpc_types::CellInput>(r#\"\n {\n   \"previous_output\": {\n     \"index\": \"0x0\",\n     \"tx_hash\": \"0x365698b50ca0da75dca2c87f9e7b563811d3b5813736b8cc62cc3b106faceb17\"\n   },\n   \"since\": \"0x0\"\n }\n # \"#).unwrap();\n```",
+        "description": "The input cell of a transaction.\n\n## Examples\n\n```\n# serde_json::from_str::<ckb_jsonrpc_types::CellInput>(r#\"\n{\n  \"previous_output\": {\n    \"index\": \"0x0\",\n    \"tx_hash\": \"0x365698b50ca0da75dca2c87f9e7b563811d3b5813736b8cc62cc3b106faceb17\"\n  },\n  \"since\": \"0x0\"\n}\n# \"#).unwrap();\n```",
         "properties": {
           "previous_output": {
-            "$ref": "#/components/schemas/OutPoint",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/OutPoint"
+              }
+            ],
             "description": "Reference to the input cell."
           },
           "since": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "Restrict when the transaction can be committed into the chain.\n\nSee the RFC [Transaction valid since](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0017-tx-valid-since/0017-tx-valid-since.md)."
           }
         },
         "required": [
-          "previous_output",
-          "since"
+          "since",
+          "previous_output"
         ],
         "type": "object"
       },
       "CellOutput": {
         "additionalProperties": false,
-        "description": "The fields of an output cell except the cell data.\n\n## Examples\n\n```\n # serde_json::from_str::<ckb_jsonrpc_types::CellOutput>(r#\"\n {\n   \"capacity\": \"0x2540be400\",\n   \"lock\": {\n     \"code_hash\": \"0x28e83a1277d48add8e72fadaa9248559e1b632bab2bd60b27955ebc4c03800a5\",\n     \"hash_type\": \"data\",\n     \"args\": \"0x\"\n   },\n   \"type\": null\n }\n # \"#).unwrap();\n```",
+        "description": "The fields of an output cell except the cell data.\n\n## Examples\n\n```\n# serde_json::from_str::<ckb_jsonrpc_types::CellOutput>(r#\"\n{\n  \"capacity\": \"0x2540be400\",\n  \"lock\": {\n    \"code_hash\": \"0x28e83a1277d48add8e72fadaa9248559e1b632bab2bd60b27955ebc4c03800a5\",\n    \"hash_type\": \"data\",\n    \"args\": \"0x\"\n  },\n  \"type\": null\n}\n# \"#).unwrap();\n```",
         "properties": {
           "capacity": {
-            "$ref": "#/components/schemas/Uint64",
-            "description": "The cell capacity.\n\nThe capacity of a cell is the value of the cell in Shannons. It is also the upper limit of the cell occupied storage size where every 100,000,000 Shannons give 1-byte storage."
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
+            "description": "The cell capacity.\n\nThe capacity of a cell is the value of the cell in Shannons. It is also the upper limit of\nthe cell occupied storage size where every 100,000,000 Shannons give 1-byte storage."
           },
           "lock": {
-            "$ref": "#/components/schemas/Script",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Script"
+              }
+            ],
             "description": "The lock script."
           },
           "type": {
@@ -101,26 +141,49 @@
         "description": "The dep cell type. Allowed values: \"code\" and \"dep_group\".",
         "oneOf": [
           {
+            "const": "code",
             "description": "Type \"code\".\n\nUse the cell itself as the dep cell.",
-            "enum": [
-              "code"
-            ],
             "type": "string"
           },
           {
-            "description": "Type \"dep_group\".\n\nThe cell is a dep group which members are cells. These members are used as dep cells instead of the group itself.\n\nThe dep group stores the array of `OutPoint`s serialized via molecule in the cell data. Each `OutPoint` points to one cell member.",
-            "enum": [
-              "dep_group"
-            ],
+            "const": "dep_group",
+            "description": "Type \"dep_group\".\n\nThe cell is a dep group whose members are cells. These members are used as dep cells\ninstead of the group itself.\n\nThe dep group stores the array of `OutPoint`s serialized via molecule in the cell data.\nEach `OutPoint` points to one cell member.",
             "type": "string"
           }
         ]
+      },
+      "EntryCompleted": {
+        "description": "Transaction's verify result by test_tx_pool_accept",
+        "properties": {
+          "cycles": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
+            "description": "Cached tx cycles"
+          },
+          "fee": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
+            "description": "Cached tx fee"
+          }
+        },
+        "required": [
+          "cycles",
+          "fee"
+        ],
+        "type": "object"
       },
       "H256": {
         "description": "The 32-byte fixed-length binary data.\n\nThe name comes from the number of bits in the data.\n\nIn JSONRPC, it is encoded as a 0x-prefixed hex string.",
         "items": {
           "format": "uint8",
-          "minimum": 0.0,
+          "maximum": 255,
+          "minimum": 0,
           "type": "integer"
         },
         "maxItems": 32,
@@ -132,20 +195,28 @@
       },
       "OutPoint": {
         "additionalProperties": false,
-        "description": "Reference to a cell via transaction hash and output index.\n\n## Examples\n\n```\n # serde_json::from_str::<ckb_jsonrpc_types::OutPoint>(r#\"\n {\n   \"index\": \"0x0\",\n   \"tx_hash\": \"0x365698b50ca0da75dca2c87f9e7b563811d3b5813736b8cc62cc3b106faceb17\"\n }\n # \"#).unwrap();\n```",
+        "description": "Reference to a cell via transaction hash and output index.\n\n## Examples\n\n```\n# serde_json::from_str::<ckb_jsonrpc_types::OutPoint>(r#\"\n{\n  \"index\": \"0x0\",\n  \"tx_hash\": \"0x365698b50ca0da75dca2c87f9e7b563811d3b5813736b8cc62cc3b106faceb17\"\n}\n# \"#).unwrap();\n```",
         "properties": {
           "index": {
-            "$ref": "#/components/schemas/Uint32",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint32"
+              }
+            ],
             "description": "The output index of the cell in the transaction specified by `tx_hash`."
           },
           "tx_hash": {
-            "$ref": "#/components/schemas/H256",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/H256"
+              }
+            ],
             "description": "Transaction hash in which the cell is an output."
           }
         },
         "required": [
-          "index",
-          "tx_hash"
+          "tx_hash",
+          "index"
         ],
         "type": "object"
       },
@@ -153,17 +224,13 @@
         "description": "Transaction output validators that prevent common mistakes.",
         "oneOf": [
           {
+            "const": "passthrough",
             "description": "the default validator, bypass output checking, thus allow any kind of transaction outputs.",
-            "enum": [
-              "passthrough"
-            ],
             "type": "string"
           },
           {
+            "const": "well_known_scripts_only",
             "description": "restricts the lock script and type script usage, see more information on <https://github.com/nervosnetwork/ckb/wiki/Transaction-%C2%BB-Default-Outputs-Validator>",
-            "enum": [
-              "well_known_scripts_only"
-            ],
             "type": "string"
           }
         ]
@@ -172,11 +239,19 @@
         "description": "A Tx details info in tx-pool.",
         "properties": {
           "ancestors_count": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "The ancestors count of tx"
           },
           "descendants_count": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "The descendants count of tx"
           },
           "entry_status": {
@@ -184,46 +259,74 @@
             "type": "string"
           },
           "pending_count": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "The pending(`pending` and `gap`) count"
           },
           "proposed_count": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "The proposed count"
           },
           "rank_in_pending": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "The rank in pending, starting from 0"
           },
           "score_sortkey": {
-            "$ref": "#/components/schemas/AncestorsScoreSortKey",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AncestorsScoreSortKey"
+              }
+            ],
             "description": "The score key details, useful to debug"
           },
           "timestamp": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "The time added into tx-pool"
           }
         },
         "required": [
-          "ancestors_count",
-          "descendants_count",
+          "timestamp",
           "entry_status",
+          "rank_in_pending",
           "pending_count",
           "proposed_count",
-          "rank_in_pending",
-          "score_sortkey",
-          "timestamp"
+          "descendants_count",
+          "ancestors_count",
+          "score_sortkey"
         ],
         "type": "object"
       },
       "RawTxPool": {
         "anyOf": [
           {
-            "$ref": "#/components/schemas/TxPoolIds",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TxPoolIds"
+              }
+            ],
             "description": "verbose = false"
           },
           {
-            "$ref": "#/components/schemas/TxPoolEntries",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TxPoolEntries"
+              }
+            ],
             "description": "verbose = true"
           }
         ],
@@ -231,57 +334,686 @@
       },
       "Script": {
         "additionalProperties": false,
-        "description": "Describes the lock script and type script for a cell.\n\n## Examples\n\n```\n # serde_json::from_str::<ckb_jsonrpc_types::Script>(r#\"\n {\n   \"code_hash\": \"0x28e83a1277d48add8e72fadaa9248559e1b632bab2bd60b27955ebc4c03800a5\",\n   \"hash_type\": \"data\",\n   \"args\": \"0x\"\n }\n # \"#).unwrap();\n```",
+        "description": "Describes the lock script and type script for a cell.\n\n## Examples\n\n```\n# serde_json::from_str::<ckb_jsonrpc_types::Script>(r#\"\n{\n  \"code_hash\": \"0x28e83a1277d48add8e72fadaa9248559e1b632bab2bd60b27955ebc4c03800a5\",\n  \"hash_type\": \"data\",\n  \"args\": \"0x\"\n}\n# \"#).unwrap();\n```",
         "properties": {
           "args": {
-            "$ref": "#/components/schemas/JsonBytes",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/JsonBytes"
+              }
+            ],
             "description": "Arguments for script."
           },
           "code_hash": {
-            "$ref": "#/components/schemas/H256",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/H256"
+              }
+            ],
             "description": "The hash used to match the script code."
           },
           "hash_type": {
-            "$ref": "#/components/schemas/ScriptHashType",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ScriptHashType"
+              }
+            ],
             "description": "Specifies how to use the `code_hash` to match the script code."
           }
         },
         "required": [
-          "args",
           "code_hash",
-          "hash_type"
+          "hash_type",
+          "args"
         ],
         "type": "object"
       },
       "ScriptHashType": {
-        "description": "Specifies how the script `code_hash` is used to match the script code and how to run the code.\n\nAllowed kinds: \"data\", \"type\", \"data1\" and \"data2\"\n\nRefer to the section [Code Locating](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0022-transaction-structure/0022-transaction-structure.md#code-locating) and [Upgradable Script](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0022-transaction-structure/0022-transaction-structure.md#upgradable-script) in the RFC *CKB Transaction Structure*.\n\nThe hash type is split into the high 7 bits and the low 1 bit, when the low 1 bit is 1, it indicates the type, when the low 1 bit is 0, it indicates the data, and then it relies on the high 7 bits to indicate that the data actually corresponds to the version.",
+        "description": "Specifies how the script `code_hash` is used to match the script code and how to run the code.\n\nAllowed kinds: \"data\", \"type\", \"data1\" and \"data2\"\n\nRefer to the section [Code Locating](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0022-transaction-structure/0022-transaction-structure.md#code-locating)\nand [Upgradable Script](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0022-transaction-structure/0022-transaction-structure.md#upgradable-script)\nin the RFC *CKB Transaction Structure*.\n\nThe hash type is split into the high 7 bits and the low 1 bit,\nwhen the low 1 bit is 1, it indicates the type,\nwhen the low 1 bit is 0, it indicates the data,\nand then it relies on the high 7 bits to indicate\nthat the data actually corresponds to the version.",
         "oneOf": [
           {
-            "description": "Type \"data\" matches script code via cell data hash, and run the script code in v0 CKB VM.",
-            "enum": [
-              "data"
-            ],
+            "const": "data",
+            "description": "Type \"data\" matches script code via cell data hash, and runs the script code in v0 CKB VM",
             "type": "string"
           },
           {
+            "const": "type",
             "description": "Type \"type\" matches script code via cell type script hash.",
-            "enum": [
-              "type"
-            ],
             "type": "string"
           },
           {
-            "description": "Type \"data1\" matches script code via cell data hash, and run the script code in v1 CKB VM.",
-            "enum": [
-              "data1"
-            ],
+            "const": "data1",
+            "description": "Type \"data1\" matches script code via cell data hash, and runs the script code in v1 CKB VM",
             "type": "string"
           },
           {
-            "description": "Type \"data2\" matches script code via cell data hash, and run the script code in v2 CKB VM.",
-            "enum": [
-              "data2"
-            ],
+            "const": "data2",
+            "description": "Type \"data2\" matches script code via cell data hash, and runs the script code in v2 CKB VM",
+            "type": "string"
+          },
+          {
+            "const": "data3",
+            "description": "Type \"data3\" matches script code via cell data hash, and runs the script code in v3 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data4",
+            "description": "Type \"data4\" matches script code via cell data hash, and runs the script code in v4 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data5",
+            "description": "Type \"data5\" matches script code via cell data hash, and runs the script code in v5 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data6",
+            "description": "Type \"data6\" matches script code via cell data hash, and runs the script code in v6 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data7",
+            "description": "Type \"data7\" matches script code via cell data hash, and runs the script code in v7 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data8",
+            "description": "Type \"data8\" matches script code via cell data hash, and runs the script code in v8 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data9",
+            "description": "Type \"data9\" matches script code via cell data hash, and runs the script code in v9 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data10",
+            "description": "Type \"data10\" matches script code via cell data hash, and runs the script code in v10 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data11",
+            "description": "Type \"data11\" matches script code via cell data hash, and runs the script code in v11 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data12",
+            "description": "Type \"data12\" matches script code via cell data hash, and runs the script code in v12 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data13",
+            "description": "Type \"data13\" matches script code via cell data hash, and runs the script code in v13 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data14",
+            "description": "Type \"data14\" matches script code via cell data hash, and runs the script code in v14 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data15",
+            "description": "Type \"data15\" matches script code via cell data hash, and runs the script code in v15 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data16",
+            "description": "Type \"data16\" matches script code via cell data hash, and runs the script code in v16 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data17",
+            "description": "Type \"data17\" matches script code via cell data hash, and runs the script code in v17 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data18",
+            "description": "Type \"data18\" matches script code via cell data hash, and runs the script code in v18 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data19",
+            "description": "Type \"data19\" matches script code via cell data hash, and runs the script code in v19 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data20",
+            "description": "Type \"data20\" matches script code via cell data hash, and runs the script code in v20 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data21",
+            "description": "Type \"data21\" matches script code via cell data hash, and runs the script code in v21 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data22",
+            "description": "Type \"data22\" matches script code via cell data hash, and runs the script code in v22 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data23",
+            "description": "Type \"data23\" matches script code via cell data hash, and runs the script code in v23 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data24",
+            "description": "Type \"data24\" matches script code via cell data hash, and runs the script code in v24 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data25",
+            "description": "Type \"data25\" matches script code via cell data hash, and runs the script code in v25 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data26",
+            "description": "Type \"data26\" matches script code via cell data hash, and runs the script code in v26 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data27",
+            "description": "Type \"data27\" matches script code via cell data hash, and runs the script code in v27 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data28",
+            "description": "Type \"data28\" matches script code via cell data hash, and runs the script code in v28 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data29",
+            "description": "Type \"data29\" matches script code via cell data hash, and runs the script code in v29 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data30",
+            "description": "Type \"data30\" matches script code via cell data hash, and runs the script code in v30 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data31",
+            "description": "Type \"data31\" matches script code via cell data hash, and runs the script code in v31 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data32",
+            "description": "Type \"data32\" matches script code via cell data hash, and runs the script code in v32 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data33",
+            "description": "Type \"data33\" matches script code via cell data hash, and runs the script code in v33 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data34",
+            "description": "Type \"data34\" matches script code via cell data hash, and runs the script code in v34 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data35",
+            "description": "Type \"data35\" matches script code via cell data hash, and runs the script code in v35 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data36",
+            "description": "Type \"data36\" matches script code via cell data hash, and runs the script code in v36 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data37",
+            "description": "Type \"data37\" matches script code via cell data hash, and runs the script code in v37 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data38",
+            "description": "Type \"data38\" matches script code via cell data hash, and runs the script code in v38 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data39",
+            "description": "Type \"data39\" matches script code via cell data hash, and runs the script code in v39 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data40",
+            "description": "Type \"data40\" matches script code via cell data hash, and runs the script code in v40 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data41",
+            "description": "Type \"data41\" matches script code via cell data hash, and runs the script code in v41 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data42",
+            "description": "Type \"data42\" matches script code via cell data hash, and runs the script code in v42 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data43",
+            "description": "Type \"data43\" matches script code via cell data hash, and runs the script code in v43 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data44",
+            "description": "Type \"data44\" matches script code via cell data hash, and runs the script code in v44 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data45",
+            "description": "Type \"data45\" matches script code via cell data hash, and runs the script code in v45 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data46",
+            "description": "Type \"data46\" matches script code via cell data hash, and runs the script code in v46 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data47",
+            "description": "Type \"data47\" matches script code via cell data hash, and runs the script code in v47 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data48",
+            "description": "Type \"data48\" matches script code via cell data hash, and runs the script code in v48 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data49",
+            "description": "Type \"data49\" matches script code via cell data hash, and runs the script code in v49 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data50",
+            "description": "Type \"data50\" matches script code via cell data hash, and runs the script code in v50 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data51",
+            "description": "Type \"data51\" matches script code via cell data hash, and runs the script code in v51 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data52",
+            "description": "Type \"data52\" matches script code via cell data hash, and runs the script code in v52 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data53",
+            "description": "Type \"data53\" matches script code via cell data hash, and runs the script code in v53 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data54",
+            "description": "Type \"data54\" matches script code via cell data hash, and runs the script code in v54 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data55",
+            "description": "Type \"data55\" matches script code via cell data hash, and runs the script code in v55 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data56",
+            "description": "Type \"data56\" matches script code via cell data hash, and runs the script code in v56 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data57",
+            "description": "Type \"data57\" matches script code via cell data hash, and runs the script code in v57 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data58",
+            "description": "Type \"data58\" matches script code via cell data hash, and runs the script code in v58 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data59",
+            "description": "Type \"data59\" matches script code via cell data hash, and runs the script code in v59 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data60",
+            "description": "Type \"data60\" matches script code via cell data hash, and runs the script code in v60 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data61",
+            "description": "Type \"data61\" matches script code via cell data hash, and runs the script code in v61 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data62",
+            "description": "Type \"data62\" matches script code via cell data hash, and runs the script code in v62 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data63",
+            "description": "Type \"data63\" matches script code via cell data hash, and runs the script code in v63 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data64",
+            "description": "Type \"data64\" matches script code via cell data hash, and runs the script code in v64 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data65",
+            "description": "Type \"data65\" matches script code via cell data hash, and runs the script code in v65 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data66",
+            "description": "Type \"data66\" matches script code via cell data hash, and runs the script code in v66 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data67",
+            "description": "Type \"data67\" matches script code via cell data hash, and runs the script code in v67 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data68",
+            "description": "Type \"data68\" matches script code via cell data hash, and runs the script code in v68 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data69",
+            "description": "Type \"data69\" matches script code via cell data hash, and runs the script code in v69 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data70",
+            "description": "Type \"data70\" matches script code via cell data hash, and runs the script code in v70 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data71",
+            "description": "Type \"data71\" matches script code via cell data hash, and runs the script code in v71 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data72",
+            "description": "Type \"data72\" matches script code via cell data hash, and runs the script code in v72 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data73",
+            "description": "Type \"data73\" matches script code via cell data hash, and runs the script code in v73 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data74",
+            "description": "Type \"data74\" matches script code via cell data hash, and runs the script code in v74 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data75",
+            "description": "Type \"data75\" matches script code via cell data hash, and runs the script code in v75 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data76",
+            "description": "Type \"data76\" matches script code via cell data hash, and runs the script code in v76 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data77",
+            "description": "Type \"data77\" matches script code via cell data hash, and runs the script code in v77 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data78",
+            "description": "Type \"data78\" matches script code via cell data hash, and runs the script code in v78 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data79",
+            "description": "Type \"data79\" matches script code via cell data hash, and runs the script code in v79 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data80",
+            "description": "Type \"data80\" matches script code via cell data hash, and runs the script code in v80 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data81",
+            "description": "Type \"data81\" matches script code via cell data hash, and runs the script code in v81 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data82",
+            "description": "Type \"data82\" matches script code via cell data hash, and runs the script code in v82 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data83",
+            "description": "Type \"data83\" matches script code via cell data hash, and runs the script code in v83 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data84",
+            "description": "Type \"data84\" matches script code via cell data hash, and runs the script code in v84 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data85",
+            "description": "Type \"data85\" matches script code via cell data hash, and runs the script code in v85 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data86",
+            "description": "Type \"data86\" matches script code via cell data hash, and runs the script code in v86 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data87",
+            "description": "Type \"data87\" matches script code via cell data hash, and runs the script code in v87 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data88",
+            "description": "Type \"data88\" matches script code via cell data hash, and runs the script code in v88 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data89",
+            "description": "Type \"data89\" matches script code via cell data hash, and runs the script code in v89 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data90",
+            "description": "Type \"data90\" matches script code via cell data hash, and runs the script code in v90 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data91",
+            "description": "Type \"data91\" matches script code via cell data hash, and runs the script code in v91 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data92",
+            "description": "Type \"data92\" matches script code via cell data hash, and runs the script code in v92 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data93",
+            "description": "Type \"data93\" matches script code via cell data hash, and runs the script code in v93 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data94",
+            "description": "Type \"data94\" matches script code via cell data hash, and runs the script code in v94 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data95",
+            "description": "Type \"data95\" matches script code via cell data hash, and runs the script code in v95 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data96",
+            "description": "Type \"data96\" matches script code via cell data hash, and runs the script code in v96 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data97",
+            "description": "Type \"data97\" matches script code via cell data hash, and runs the script code in v97 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data98",
+            "description": "Type \"data98\" matches script code via cell data hash, and runs the script code in v98 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data99",
+            "description": "Type \"data99\" matches script code via cell data hash, and runs the script code in v99 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data100",
+            "description": "Type \"data100\" matches script code via cell data hash, and runs the script code in v100 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data101",
+            "description": "Type \"data101\" matches script code via cell data hash, and runs the script code in v101 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data102",
+            "description": "Type \"data102\" matches script code via cell data hash, and runs the script code in v102 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data103",
+            "description": "Type \"data103\" matches script code via cell data hash, and runs the script code in v103 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data104",
+            "description": "Type \"data104\" matches script code via cell data hash, and runs the script code in v104 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data105",
+            "description": "Type \"data105\" matches script code via cell data hash, and runs the script code in v105 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data106",
+            "description": "Type \"data106\" matches script code via cell data hash, and runs the script code in v106 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data107",
+            "description": "Type \"data107\" matches script code via cell data hash, and runs the script code in v107 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data108",
+            "description": "Type \"data108\" matches script code via cell data hash, and runs the script code in v108 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data109",
+            "description": "Type \"data109\" matches script code via cell data hash, and runs the script code in v109 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data110",
+            "description": "Type \"data110\" matches script code via cell data hash, and runs the script code in v110 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data111",
+            "description": "Type \"data111\" matches script code via cell data hash, and runs the script code in v111 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data112",
+            "description": "Type \"data112\" matches script code via cell data hash, and runs the script code in v112 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data113",
+            "description": "Type \"data113\" matches script code via cell data hash, and runs the script code in v113 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data114",
+            "description": "Type \"data114\" matches script code via cell data hash, and runs the script code in v114 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data115",
+            "description": "Type \"data115\" matches script code via cell data hash, and runs the script code in v115 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data116",
+            "description": "Type \"data116\" matches script code via cell data hash, and runs the script code in v116 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data117",
+            "description": "Type \"data117\" matches script code via cell data hash, and runs the script code in v117 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data118",
+            "description": "Type \"data118\" matches script code via cell data hash, and runs the script code in v118 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data119",
+            "description": "Type \"data119\" matches script code via cell data hash, and runs the script code in v119 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data120",
+            "description": "Type \"data120\" matches script code via cell data hash, and runs the script code in v120 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data121",
+            "description": "Type \"data121\" matches script code via cell data hash, and runs the script code in v121 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data122",
+            "description": "Type \"data122\" matches script code via cell data hash, and runs the script code in v122 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data123",
+            "description": "Type \"data123\" matches script code via cell data hash, and runs the script code in v123 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data124",
+            "description": "Type \"data124\" matches script code via cell data hash, and runs the script code in v124 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data125",
+            "description": "Type \"data125\" matches script code via cell data hash, and runs the script code in v125 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data126",
+            "description": "Type \"data126\" matches script code via cell data hash, and runs the script code in v126 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data127",
+            "description": "Type \"data127\" matches script code via cell data hash, and runs the script code in v127 CKB VM.",
             "type": "string"
           }
         ]
@@ -291,7 +1023,7 @@
         "description": "The transaction.\n\nRefer to RFC [CKB Transaction Structure](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0022-transaction-structure/0022-transaction-structure.md).",
         "properties": {
           "cell_deps": {
-            "description": "An array of cell deps.\n\nCKB locates lock script and type script code via cell deps. The script also can use syscalls to read the cells here.\n\nUnlike inputs, the live cells can be used as cell deps in multiple transactions.",
+            "description": "An array of cell deps.\n\nCKB locates lock script and type script code via cell deps. The script also can use syscalls\nto read the cells here.\n\nUnlike inputs, the live cells can be used as cell deps in multiple transactions.",
             "items": {
               "$ref": "#/components/schemas/CellDep"
             },
@@ -319,18 +1051,22 @@
             "type": "array"
           },
           "outputs_data": {
-            "description": "Output cells data.\n\nThis is a parallel array of outputs. The cell capacity, lock, and type of the output i is `outputs[i]` and its data is `outputs_data[i]`.",
+            "description": "Output cells data.\n\nThis is a parallel array of outputs. The cell capacity, lock, and type of the output i is\n`outputs[i]` and its data is `outputs_data[i]`.",
             "items": {
               "$ref": "#/components/schemas/JsonBytes"
             },
             "type": "array"
           },
           "version": {
-            "$ref": "#/components/schemas/Uint32",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint32"
+              }
+            ],
             "description": "Reserved for future usage. It must equal 0 in current version."
           },
           "witnesses": {
-            "description": "An array of variable-length binaries.\n\nLock script and type script can read data here to verify the transaction.\n\nFor example, the bundled secp256k1 lock script requires storing the signature in `witnesses`.",
+            "description": "An array of variable-length binaries.\n\nLock script and type script can read data here to verify the transaction.\n\nFor example, the bundled secp256k1 lock script requires storing the signature in\n`witnesses`.",
             "items": {
               "$ref": "#/components/schemas/JsonBytes"
             },
@@ -338,12 +1074,12 @@
           }
         },
         "required": [
+          "version",
           "cell_deps",
           "header_deps",
           "inputs",
           "outputs",
           "outputs_data",
-          "version",
           "witnesses"
         ],
         "type": "object"
@@ -351,6 +1087,13 @@
       "TxPoolEntries": {
         "description": "Tx-pool entries object",
         "properties": {
+          "conflicted": {
+            "description": "Conflicted tx hash vec",
+            "items": {
+              "$ref": "#/components/schemas/H256"
+            },
+            "type": "array"
+          },
           "pending": {
             "additionalProperties": {
               "$ref": "#/components/schemas/TxPoolEntry"
@@ -368,7 +1111,8 @@
         },
         "required": [
           "pending",
-          "proposed"
+          "proposed",
+          "conflicted"
         ],
         "type": "object"
       },
@@ -376,41 +1120,69 @@
         "description": "Transaction entry info",
         "properties": {
           "ancestors_count": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "Number of in-tx-pool ancestor transactions"
           },
           "ancestors_cycles": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "Cycles of in-tx-pool ancestor transactions"
           },
           "ancestors_size": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "Size of in-tx-pool ancestor transactions"
           },
           "cycles": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "Consumed cycles."
           },
           "fee": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "The transaction fee."
           },
           "size": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "The transaction serialized size in block."
           },
           "timestamp": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "The unix timestamp when entering the Txpool, unit: Millisecond"
           }
         },
         "required": [
-          "ancestors_count",
-          "ancestors_cycles",
-          "ancestors_size",
           "cycles",
-          "fee",
           "size",
+          "fee",
+          "ancestors_size",
+          "ancestors_cycles",
+          "ancestors_count",
           "timestamp"
         ],
         "type": "object"
@@ -443,78 +1215,135 @@
         "description": "Transaction pool information.",
         "properties": {
           "last_txs_updated_at": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "Last updated time. This is the Unix timestamp in milliseconds."
           },
           "max_tx_pool_size": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "Total limit on the size of transactions in the tx-pool"
           },
           "min_fee_rate": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "Fee rate threshold. The pool rejects transactions which fee rate is below this threshold.\n\nThe unit is Shannons per 1000 bytes transaction serialization size in the block."
           },
           "min_rbf_rate": {
-            "$ref": "#/components/schemas/Uint64",
-            "description": "RBF rate threshold.\n\nThe pool reject to replace for transactions which fee rate is below this threshold. if min_rbf_rate > min_fee_rate then RBF is enabled on the node.\n\nThe unit is Shannons per 1000 bytes transaction serialization size in the block."
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
+            "description": "RBF rate threshold.\n\nThe pool rejects to replace transactions whose fee rate is below this threshold.\nif min_rbf_rate > min_fee_rate then RBF is enabled on the node.\n\nThe unit is Shannons per 1000 bytes transaction serialization size in the block."
           },
           "orphan": {
-            "$ref": "#/components/schemas/Uint64",
-            "description": "Count of orphan transactions.\n\nAn orphan transaction has an input cell from the transaction which is neither in the chain nor in the transaction pool."
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
+            "description": "Count of orphan transactions.\n\nAn orphan transaction has an input cell from the transaction which is neither in the chain\nnor in the transaction pool."
           },
           "pending": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "Count of transactions in the pending state.\n\nThe pending transactions must be proposed in a new block first."
           },
           "proposed": {
-            "$ref": "#/components/schemas/Uint64",
-            "description": "Count of transactions in the proposed state.\n\nThe proposed transactions are ready to be committed in the new block after the block `tip_hash`."
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
+            "description": "Count of transactions in the proposed state.\n\nThe proposed transactions are ready to be committed in the new block after the block\n`tip_hash`."
           },
           "tip_hash": {
-            "$ref": "#/components/schemas/H256",
-            "description": "The associated chain tip block hash.\n\nThe transaction pool is stateful. It manages the transactions which are valid to be committed after this block."
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/H256"
+              }
+            ],
+            "description": "The associated chain tip block hash.\n\nThe transaction pool is stateful. It manages the transactions which are valid to be\ncommitted after this block."
           },
           "tip_number": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "The block number of the block `tip_hash`."
           },
           "total_tx_cycles": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "Total consumed VM cycles of all the transactions in the pool (excluding orphan transactions)."
           },
           "total_tx_size": {
-            "$ref": "#/components/schemas/Uint64",
-            "description": "Total count of transactions in the pool of all the different kinds of states (excluding orphan transactions)."
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
+            "description": "Total size of transactions bytes in the pool of all the different kinds of states (excluding orphan transactions)."
           },
           "tx_size_limit": {
-            "$ref": "#/components/schemas/Uint64",
-            "description": "Limiting transactions to tx_size_limit\n\nTransactions with a large size close to the block size limit may not be packaged, because the block header and cellbase are occupied, so the tx-pool is limited to accepting transaction up to tx_size_limit."
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
+            "description": "Limiting transactions to tx_size_limit\n\nTransactions with a large size close to the block size limit may not be packaged,\nbecause the block header and cellbase are occupied,\nso the tx-pool is limited to accepting transaction up to tx_size_limit."
+          },
+          "verify_queue_size": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
+            "description": "verify_queue size"
           }
         },
         "required": [
-          "last_txs_updated_at",
-          "max_tx_pool_size",
-          "min_fee_rate",
-          "min_rbf_rate",
-          "orphan",
-          "pending",
-          "proposed",
           "tip_hash",
           "tip_number",
-          "total_tx_cycles",
+          "pending",
+          "proposed",
+          "orphan",
           "total_tx_size",
-          "tx_size_limit"
+          "total_tx_cycles",
+          "min_fee_rate",
+          "min_rbf_rate",
+          "last_txs_updated_at",
+          "tx_size_limit",
+          "max_tx_pool_size",
+          "verify_queue_size"
         ],
         "type": "object"
       },
       "Uint32": {
         "format": "uint32",
-        "minimum": 0.0,
+        "minimum": 0,
         "type": "integer"
       },
       "Uint64": {
         "format": "uint64",
-        "minimum": 0.0,
+        "minimum": 0,
         "type": "integer"
       }
     }
@@ -522,7 +1351,7 @@
   "info": {
     "description": " RPC Module Pool for transaction memory pool.",
     "title": "pool_rpc",
-    "version": "0.115.0-pre"
+    "version": "0.204.0"
   },
   "methods": [
     {
@@ -557,6 +1386,37 @@
       }
     },
     {
+      "description": " Test if a transaction can be accepted by the transaction pool without inserting it into the pool or rebroadcasting it to peers.\n The parameters and errors of this method are the same as `send_transaction`.\n\n ## Params\n\n * `transaction` - The transaction.\n * `outputs_validator` - Validates the transaction outputs before entering the tx-pool. (**Optional**, default is \"passthrough\").\n\n ## Errors\n\n * [`PoolRejectedTransactionByOutputsValidator (-1102)`](../enum.RPCError.html#variant.PoolRejectedTransactionByOutputsValidator) - The transaction is rejected by the validator specified by `outputs_validator`. If you really want to send transactions with advanced scripts, please set `outputs_validator` to \"passthrough\".\n * [`PoolRejectedTransactionByMinFeeRate (-1104)`](../enum.RPCError.html#variant.PoolRejectedTransactionByMinFeeRate) - The transaction fee rate must be greater than or equal to the config option `tx_pool.min_fee_rate`.\n * [`PoolRejectedTransactionByMaxAncestorsCountLimit (-1105)`](../enum.RPCError.html#variant.PoolRejectedTransactionByMaxAncestorsCountLimit) - The ancestors count must be greater than or equal to the config option `tx_pool.max_ancestors_count`.\n * [`PoolIsFull (-1106)`](../enum.RPCError.html#variant.PoolIsFull) - Pool is full.\n * [`PoolRejectedDuplicatedTransaction (-1107)`](../enum.RPCError.html#variant.PoolRejectedDuplicatedTransaction) - The transaction is already in the pool.\n * [`TransactionFailedToResolve (-301)`](../enum.RPCError.html#variant.TransactionFailedToResolve) - Failed to resolve the referenced cells and headers used in the transaction, as inputs or dependencies.\n * [`TransactionFailedToVerify (-302)`](../enum.RPCError.html#variant.TransactionFailedToVerify) - Failed to verify the transaction.\n\n ## Examples\n\n Request\n\n ```json\n {\n   \"id\": 42,\n   \"jsonrpc\": \"2.0\",\n   \"method\": \"test_tx_pool_accept\",\n   \"params\": [\n     {\n       \"cell_deps\": [\n         {\n           \"dep_type\": \"code\",\n           \"out_point\": {\n             \"index\": \"0x0\",\n             \"tx_hash\": \"0xa4037a893eb48e18ed4ef61034ce26eba9c585f15c9cee102ae58505565eccc3\"\n           }\n         }\n       ],\n       \"header_deps\": [\n         \"0x7978ec7ce5b507cfb52e149e36b1a23f6062ed150503c85bbf825da3599095ed\"\n       ],\n       \"inputs\": [\n         {\n           \"previous_output\": {\n             \"index\": \"0x0\",\n             \"tx_hash\": \"0x075fe030c1f4725713c5aacf41c2f59b29b284008fdb786e5efd8a058be51d0c\"\n           },\n           \"since\": \"0x0\"\n         }\n       ],\n       \"outputs\": [\n         {\n           \"capacity\": \"0x2431ac129\",\n           \"lock\": {\n             \"code_hash\": \"0x28e83a1277d48add8e72fadaa9248559e1b632bab2bd60b27955ebc4c03800a5\",\n             \"hash_type\": \"data\",\n             \"args\": \"0x\"\n           },\n           \"type\": null\n         }\n       ],\n       \"outputs_data\": [\n         \"0x\"\n       ],\n       \"version\": \"0x0\",\n       \"witnesses\": []\n     },\n     \"passthrough\"\n   ]\n }\n ```\n\n Response\n\n ```json\n {\n   \"id\": 42,\n   \"jsonrpc\": \"2.0\",\n   \"result\": {\n     \"cycles\": \"0x219\",\n     \"fee\": \"0x2a66f36e90\"\n   }\n }\n ```\n\n\n The response looks like below if the transaction pool check fails\n\n ```text\n {\n   \"id\": 42,\n   \"jsonrpc\": \"2.0\",\n   \"result\": null,\n   \"error\": {\n     \"code\": -1107,\n     \"data\": \"Duplicated(Byte32(0xa0ef4eb5f4ceeb08a4c8524d84c5da95dce2f608e0ca2ec8091191b0f330c6e3))\",\n     \"message\": \"PoolRejectedDuplicatedTransaction: Transaction(Byte32(0xa0ef4eb5f4ceeb08a4c8524d84c5da95dce2f608e0ca2ec8091191b0f330c6e3)) already exists in transaction_pool\"\n   }\n }\n ```",
+      "name": "test_tx_pool_accept",
+      "params": [
+        {
+          "name": "tx",
+          "schema": {
+            "$ref": "#/components/schemas/Transaction"
+          }
+        },
+        {
+          "name": "outputs_validator",
+          "schema": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OutputsValidator"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      ],
+      "result": {
+        "name": "test_tx_pool_accept",
+        "schema": {
+          "$ref": "#/components/schemas/EntryCompleted"
+        }
+      }
+    },
+    {
       "description": " Removes a transaction and all transactions which depends on it from tx pool if it exists.\n\n ## Params\n\n * `tx_hash` - Hash of a transaction.\n\n ## Returns\n\n If the transaction exists, return true; otherwise, return false.\n\n ## Examples\n\n Request\n\n ```json\n {\n   \"id\": 42,\n   \"jsonrpc\": \"2.0\",\n   \"method\": \"remove_transaction\",\n   \"params\": [\n     \"0xa0ef4eb5f4ceeb08a4c8524d84c5da95dce2f608e0ca2ec8091191b0f330c6e3\"\n   ]\n }\n ```\n\n Response\n\n ```json\n {\n   \"id\": 42,\n   \"jsonrpc\": \"2.0\",\n   \"result\": true\n }\n ```",
       "name": "remove_transaction",
       "params": [
@@ -575,7 +1435,7 @@
       }
     },
     {
-      "description": " Returns the transaction pool information.\n\n ## Examples\n\n Request\n\n ```json\n {\n   \"id\": 42,\n   \"jsonrpc\": \"2.0\",\n   \"method\": \"tx_pool_info\",\n   \"params\": []\n }\n ```\n\n Response\n\n ```json\n {\n   \"id\": 42,\n   \"jsonrpc\": \"2.0\",\n   \"result\": {\n     \"last_txs_updated_at\": \"0x0\",\n     \"min_fee_rate\": \"0x3e8\",\n     \"min_rbf_rate\": \"0x5dc\",\n     \"max_tx_pool_size\": \"0xaba9500\",\n     \"orphan\": \"0x0\",\n     \"pending\": \"0x1\",\n     \"proposed\": \"0x0\",\n     \"tip_hash\": \"0xa5f5c85987a15de25661e5a214f2c1449cd803f071acc7999820f25246471f40\",\n     \"tip_number\": \"0x400\",\n     \"total_tx_cycles\": \"0x219\",\n     \"total_tx_size\": \"0x112\",\n     \"tx_size_limit\": \"0x7d000\"\n   }\n }\n ```",
+      "description": " Returns the transaction pool information.\n\n ## Examples\n\n Request\n\n ```json\n {\n   \"id\": 42,\n   \"jsonrpc\": \"2.0\",\n   \"method\": \"tx_pool_info\",\n   \"params\": []\n }\n ```\n\n Response\n\n ```json\n {\n   \"id\": 42,\n   \"jsonrpc\": \"2.0\",\n   \"result\": {\n     \"last_txs_updated_at\": \"0x0\",\n     \"min_fee_rate\": \"0x3e8\",\n     \"min_rbf_rate\": \"0x5dc\",\n     \"max_tx_pool_size\": \"0xaba9500\",\n     \"orphan\": \"0x0\",\n     \"pending\": \"0x1\",\n     \"proposed\": \"0x0\",\n     \"tip_hash\": \"0xa5f5c85987a15de25661e5a214f2c1449cd803f071acc7999820f25246471f40\",\n     \"tip_number\": \"0x400\",\n     \"total_tx_cycles\": \"0x219\",\n     \"total_tx_size\": \"0x112\",\n     \"tx_size_limit\": \"0x7d000\",\n     \"verify_queue_size\": \"0x0\"\n   }\n }\n ```",
       "name": "tx_pool_info",
       "params": [],
       "result": {
@@ -597,7 +1457,18 @@
       }
     },
     {
-      "description": " Returns all transaction ids in tx pool as a json array of string transaction ids.\n ## Params\n\n * `verbose` - True for a json object, false for array of transaction ids, default=false\n\n ## Examples\n\n Request\n\n ```json\n {\n   \"id\": 42,\n   \"jsonrpc\": \"2.0\",\n   \"method\": \"get_raw_tx_pool\",\n   \"params\": [true]\n }\n ```\n\n Response\n\n ```json\n {\n   \"id\": 42,\n   \"jsonrpc\": \"2.0\",\n   \"result\":\n    {\n        \"pending\": {\n            \"0xa0ef4eb5f4ceeb08a4c8524d84c5da95dce2f608e0ca2ec8091191b0f330c6e3\": {\n                \"cycles\": \"0x219\",\n                \"size\": \"0x112\",\n                \"fee\": \"0x16923f7dcf\",\n                \"ancestors_size\": \"0x112\",\n                \"ancestors_cycles\": \"0x219\",\n                \"ancestors_count\": \"0x1\",\n                \"timestamp\": \"0x17c983e6e44\"\n            }\n        },\n        \"proposed\": {}\n    }\n }\n ```",
+      "description": " Removes all transactions from the verification queue.\n\n ## Examples\n\n Request\n\n ```json\n {\n   \"id\": 42,\n   \"jsonrpc\": \"2.0\",\n   \"method\": \"clear_tx_verify_queue\",\n   \"params\": []\n }\n ```\n\n Response\n\n ```json\n {\n   \"id\": 42,\n   \"jsonrpc\": \"2.0\",\n   \"result\": null\n }\n ```",
+      "name": "clear_tx_verify_queue",
+      "params": [],
+      "result": {
+        "name": "clear_tx_verify_queue",
+        "schema": {
+          "type": "null"
+        }
+      }
+    },
+    {
+      "description": " Returns all transaction ids in tx pool as a json array of string transaction ids.\n ## Params\n\n * `verbose` - True for a json object, false for array of transaction ids, default=false\n\n ## Examples\n\n Request\n\n ```json\n {\n   \"id\": 42,\n   \"jsonrpc\": \"2.0\",\n   \"method\": \"get_raw_tx_pool\",\n   \"params\": [true]\n }\n ```\n\n Response\n\n ```json\n {\n   \"id\": 42,\n   \"jsonrpc\": \"2.0\",\n   \"result\":\n    {\n        \"pending\": {\n            \"0xa0ef4eb5f4ceeb08a4c8524d84c5da95dce2f608e0ca2ec8091191b0f330c6e3\": {\n                \"cycles\": \"0x219\",\n                \"size\": \"0x112\",\n                \"fee\": \"0x16923f7dcf\",\n                \"ancestors_size\": \"0x112\",\n                \"ancestors_cycles\": \"0x219\",\n                \"ancestors_count\": \"0x1\",\n                \"timestamp\": \"0x17c983e6e44\"\n            }\n        },\n        \"conflicted\": [],\n        \"proposed\": {}\n    }\n }\n ```",
       "name": "get_raw_tx_pool",
       "params": [
         {
