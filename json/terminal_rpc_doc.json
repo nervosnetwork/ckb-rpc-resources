@@ -1,0 +1,506 @@
+{
+  "components": {
+    "schemas": {
+      "CellsInfo": {
+        "description": "Cells information.",
+        "properties": {
+          "estimate_live_cells_num": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
+            "description": "estimate live cells total num"
+          },
+          "total_occupied_capacities": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
+            "description": "The total occupied capacities currently in the CKB"
+          }
+        },
+        "required": [
+          "estimate_live_cells_num",
+          "total_occupied_capacities"
+        ],
+        "type": "object"
+      },
+      "Disk": {
+        "description": "Struct containing a disk information.",
+        "properties": {
+          "available_space": {
+            "description": "Returns the available disk size, in bytes.",
+            "format": "uint64",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "is_removable": {
+            "description": "Returns true if the disk is removable.",
+            "type": "boolean"
+          },
+          "total_space": {
+            "description": "Returns the total disk size, in bytes.",
+            "format": "uint64",
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total_space",
+          "available_space",
+          "is_removable"
+        ],
+        "type": "object"
+      },
+      "DiskUsage": {
+        "description": "Struct containing read and written bytes.",
+        "properties": {
+          "read_bytes": {
+            "description": "Number of read bytes since the last refresh.",
+            "format": "uint64",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "total_read_bytes": {
+            "description": "Total number of read bytes.",
+            "format": "uint64",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "total_written_bytes": {
+            "description": "Total number of written bytes.",
+            "format": "uint64",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "written_bytes": {
+            "description": "Number of written bytes since the last refresh.",
+            "format": "uint64",
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total_written_bytes",
+          "written_bytes",
+          "total_read_bytes",
+          "read_bytes"
+        ],
+        "type": "object"
+      },
+      "Global": {
+        "description": "Global system information",
+        "properties": {
+          "disks": {
+            "description": "Returns disks information.",
+            "items": {
+              "$ref": "#/components/schemas/Disk"
+            },
+            "type": "array"
+          },
+          "global_cpu_usage": {
+            "description": "Returns “global” CPUs usage (aka the addition of all the CPUs).",
+            "format": "float",
+            "type": "number"
+          },
+          "networks": {
+            "description": "Returns networks information.",
+            "items": {
+              "$ref": "#/components/schemas/Network"
+            },
+            "type": "array"
+          },
+          "total_memory": {
+            "description": "Returns the RAM size in bytes.",
+            "format": "uint64",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "used_memory": {
+            "description": "Returns the amount of used RAM in bytes.",
+            "format": "uint64",
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total_memory",
+          "used_memory",
+          "global_cpu_usage",
+          "disks",
+          "networks"
+        ],
+        "type": "object"
+      },
+      "MiningInfo": {
+        "description": "Mining information structure for the CKB-TUI Terminal module.",
+        "properties": {
+          "difficulty": {
+            "description": "Current network difficulty, represented as a U256 integer.",
+            "format": "uint256",
+            "type": "string"
+          },
+          "hash_rate": {
+            "description": "Current network hash rate, represented as a U256 integer (in hashes per second).\nThis approximates the total computational power of the mining network.",
+            "format": "uint256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "difficulty",
+          "hash_rate"
+        ],
+        "type": "object"
+      },
+      "Network": {
+        "description": "Getting volume of received and transmitted data.",
+        "properties": {
+          "interface_name": {
+            "description": "Returns network interface name",
+            "type": "string"
+          },
+          "received": {
+            "description": "Returns the number of received bytes since the last refresh.",
+            "format": "uint64",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "total_received": {
+            "description": "Returns the total number of received bytes.",
+            "format": "uint64",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "total_transmitted": {
+            "description": "Returns the total number of transmitted bytes.",
+            "format": "uint64",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "transmitted": {
+            "description": "Returns the number of transmitted bytes since the last refresh.",
+            "format": "uint64",
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "interface_name",
+          "received",
+          "total_received",
+          "transmitted",
+          "total_transmitted"
+        ],
+        "type": "object"
+      },
+      "NetworkInfo": {
+        "description": "Network peer latency information.",
+        "properties": {
+          "connected_peers": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
+            "description": "Total number of connected peers"
+          },
+          "inbound_peers": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
+            "description": "Number of inbound connections"
+          },
+          "outbound_peers": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
+            "description": "Number of outbound connections"
+          },
+          "peers": {
+            "description": "List of individual peer information with their latencies",
+            "items": {
+              "$ref": "#/components/schemas/PeerInfo"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "connected_peers",
+          "outbound_peers",
+          "inbound_peers",
+          "peers"
+        ],
+        "type": "object"
+      },
+      "Overview": {
+        "description": "Overview data structure aggregating system and mining information\nfor the CKB-TUI Terminal module.",
+        "properties": {
+          "cells": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CellsInfo"
+              }
+            ],
+            "description": "Cells information."
+          },
+          "mining": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MiningInfo"
+              }
+            ],
+            "description": "Mining information, covering hash power, difficulty."
+          },
+          "network": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NetworkInfo"
+              }
+            ],
+            "description": "Network peer latency information."
+          },
+          "pool": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TerminalPoolInfo"
+              }
+            ],
+            "description": "Transaction pool information."
+          },
+          "sys": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SysInfo"
+              }
+            ],
+            "description": "System information, including hardware and OS metrics."
+          },
+          "version": {
+            "description": "CKB node version.\n\nExample: \"version\": \"0.34.0 (f37f598 2020-07-17)\"",
+            "type": "string"
+          }
+        },
+        "required": [
+          "sys",
+          "mining",
+          "pool",
+          "cells",
+          "network",
+          "version"
+        ],
+        "type": "object"
+      },
+      "PeerInfo": {
+        "description": "Individual peer connection information.",
+        "properties": {
+          "address": {
+            "description": "Peer address",
+            "type": "string"
+          },
+          "is_outbound": {
+            "description": "Whether this is an outbound connection",
+            "type": "boolean"
+          },
+          "latency_ms": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
+            "description": "Round-trip time in milliseconds for this peer (0 if not available)"
+          },
+          "peer_id": {
+            "description": "Unique identifier for peer",
+            "format": "uint",
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "peer_id",
+          "is_outbound",
+          "latency_ms",
+          "address"
+        ],
+        "type": "object"
+      },
+      "SysInfo": {
+        "description": "System’s information.",
+        "properties": {
+          "cpu_usage": {
+            "description": "Returns the total ckb CPU usage (in %).\nNotice that it might be bigger than 100 if run on a multi-core machine.",
+            "format": "float",
+            "type": "number"
+          },
+          "disk_usage": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DiskUsage"
+              }
+            ],
+            "description": "Returns number of bytes ckb read and written to disk."
+          },
+          "global": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Global"
+              }
+            ],
+            "description": "global system information"
+          },
+          "memory": {
+            "description": "Returns the memory ckb usage (in bytes).",
+            "format": "uint64",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "virtual_memory": {
+            "description": "Returns the virtual memory usage (in bytes).",
+            "format": "uint64",
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "global",
+          "cpu_usage",
+          "disk_usage",
+          "memory",
+          "virtual_memory"
+        ],
+        "type": "object"
+      },
+      "TerminalPoolInfo": {
+        "description": "Transaction pool information.",
+        "properties": {
+          "committing": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
+            "description": "Count of committing transactions.\n\nThe Committing transactions refer to transactions that have been packaged into the\nblock_template and are awaiting mining into a block."
+          },
+          "last_txs_updated_at": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
+            "description": "Last updated time. This is the Unix timestamp in milliseconds."
+          },
+          "max_tx_pool_size": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
+            "description": "Total limit on the size of transactions in the tx-pool"
+          },
+          "orphan": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
+            "description": "Count of orphan transactions.\n\nAn orphan transaction has an input cell from the transaction which is neither in the chain\nnor in the transaction pool."
+          },
+          "pending": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
+            "description": "Count of transactions in the pending state.\n\nThe pending transactions must be proposed in a new block first."
+          },
+          "proposed": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
+            "description": "Count of transactions in the proposed state.\n\nThe proposed transactions are ready to be committed in the new block after the block\n`tip_hash`."
+          },
+          "total_recent_reject_num": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
+            "description": "Total count of recent reject transactions by pool"
+          },
+          "total_tx_cycles": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
+            "description": "Total consumed VM cycles of all the transactions in the pool (excluding orphan transactions)."
+          },
+          "total_tx_size": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
+            "description": "Total size of transactions bytes in the pool of all the different kinds of states (excluding orphan transactions)."
+          }
+        },
+        "required": [
+          "pending",
+          "proposed",
+          "orphan",
+          "committing",
+          "total_recent_reject_num",
+          "total_tx_size",
+          "total_tx_cycles",
+          "max_tx_pool_size",
+          "last_txs_updated_at"
+        ],
+        "type": "object"
+      },
+      "Uint64": {
+        "format": "uint64",
+        "minimum": 0,
+        "type": "integer"
+      }
+    }
+  },
+  "info": {
+    "description": " RPC Terminal Module, specifically designed for TUI (Terminal User Interface) applications.\n\n This module provides optimized endpoints for terminal-based monitoring tools and dashboards,\n with intelligent caching to minimize performance impact while providing real-time insights.\n\n # Intended Use Cases\n\n - **TUI Monitoring Dashboards**: Real-time node status displays in terminal environments\n - **System Administration**: Command-line tools for node health monitoring\n - **Resource Monitoring**: Tracking system resource usage over time\n - **Network Diagnostics**: Monitoring peer connectivity and performance\n\n # Performance Considerations\n\n The module uses a multi-tiered caching strategy with TTLs optimized for different data\n change frequencies. For frequent monitoring calls, use cached data (refresh: null) to\n minimize system load. Force refresh only when real-time accuracy is critical.\n\n # Refresh Flags Guide\n\n Use RefreshKind bit flags strategically:\n - **Monitoring Mode**: Use `null` or `0` for cached data (recommended)\n - **Diagnostics Mode**: Use specific flags to refresh relevant data only\n - **Full Sync**: Use `EVERYTHING` (31) for complete data refresh",
+    "title": "terminal_rpc",
+    "version": "0.204.0"
+  },
+  "methods": [
+    {
+      "description": " Returns a comprehensive overview of CKB node status for TUI applications.\n\n This method aggregates system metrics, mining information, transaction pool status,\n cells statistics, and network peer information into a single response, optimized\n for terminal-based monitoring interfaces.\n\n ## Params\n\n * `refresh` - Optional bit flags to force refresh specific cached data types.\n   Use `RefreshKind` bit flags to control which data to refresh:\n   - `0x1` (SYSTEM_INFO): Force refresh system information (CPU, memory, disk, network)\n   - `0x2` (MINING_INFO): Force refresh mining information (difficulty, hash rate)\n   - `0x4` (TX_POOL_INFO): Force refresh transaction pool information\n   - `0x8` (CELLS_INFO): Force refresh cells information\n   - `0x10` (NETWORK_INFO): Force refresh network peer latency information\n   - `0x1F` (EVERYTHING): Force refresh all cached data\n   - `null` or `0`: Use cached data when available (recommended for frequent calls)\n\n ## Returns\n\n Returns an `Overview` structure containing:\n - System information (CPU, memory, disk, network metrics)\n - Mining information (network difficulty and hash rate)\n - Transaction pool statistics\n - Blockchain cells information\n - Network peer connectivity and latency data\n - CKB node version\n\n ## Cache Behavior\n\n Data is cached with different TTL values to balance freshness with performance:\n - System info: 5 seconds (changes frequently)\n - Mining info: 10 seconds (moderate change frequency)\n - Transaction pool: 2 seconds (highly dynamic)\n - Cells info: 30 seconds (relatively static)\n - Network info: 10 seconds (moderate change frequency)\n\n ## Examples\n\n Get overview using cached data:\n\n Request\n\n ```json\n {\n   \"jsonrpc\": \"2.0\",\n   \"method\": \"get_overview\",\n   \"params\": [null],\n   \"id\": 1\n }\n ```\n\n Response\n\n ```json\n {\n   \"jsonrpc\": \"2.0\",\n   \"result\": {\n     \"sys\": {\n       \"cpu_usage\": 25.5,\n       \"memory\": 134217728,\n       \"virtual_memory\": 268435456,\n       \"disk_usage\": {\n         \"read_bytes\": 1048576,\n         \"total_read_bytes\": 1073741824,\n         \"written_bytes\": 524288,\n         \"total_written_bytes\": 536870912\n       },\n       \"global\": {\n         \"total_memory\": 8589934592,\n         \"used_memory\": 4294967296,\n         \"global_cpu_usage\": 150.0,\n         \"disks\": [\n           {\n             \"total_space\": 1000000000000,\n             \"available_space\": 500000000000,\n             \"is_removable\": false\n           }\n         ],\n         \"networks\": [\n           {\n             \"interface_name\": \"eth0\",\n             \"received\": 1048576,\n             \"total_received\": 1073741824,\n             \"transmitted\": 524288,\n             \"total_transmitted\": 536870912\n           }\n         ]\n       }\n     },\n     \"mining\": {\n       \"difficulty\": \"0x1e083126\",\n       \"hash_rate\": \"0x174876e800\"\n     },\n     \"pool\": {\n       \"pending\": \"0x64\",\n       \"proposed\": \"0x32\",\n       \"orphan\": \"0x5\",\n       \"committing\": \"0x1f\",\n       \"total_recent_reject_num\": \"0x3\",\n       \"total_tx_size\": \"0x100000\",\n       \"total_tx_cycles\": \"0x2dc6c\",\n       \"last_txs_updated_at\": \"0x187b3d137a1\",\n       \"max_tx_pool_size\": \"0x20000000\"\n     },\n     \"cells\": {\n       \"total_occupied_capacities\": \"0x15f1e59b76c000\",\n       \"estimate_live_cells_num\": \"0x989680\"\n     },\n    \"network\": {\n    \"connected_peers\": \"0x33\",\n    \"outbound_peers\": \"0x1f\",\n    \"inbound_peers\": \"0x14\",\n    \"peers\": [\n        {\n        \"peer_id\": 0,\n        \"is_outbound\": true,\n        \"latency_ms\": \"0x98\",\n         \"address\": \"/ip4/18.185.102.19/tcp/8115/p2p/QmXwUgF48ULy6hkgfqrEwEfuHW7WyWyWauueRDAYQHNDfN\"\n        },\n        {\n        \"peer_id\": 1,\n        \"is_outbound\": false,\n        \"latency_ms\": \"0xa5\",\n         \"address\": \"/ip4/18.185.102.19/tcp/8115/p2p/QmXwUgF48ULy6hkgfqrEwEfuHW7WyWyWauueRDAYQHNDfN\"\n        },\n        {\n        \"peer_id\": 2,\n        \"is_outbound\": true,\n        \"latency_ms\": \"0x0\",\n         \"address\": \"/ip4/18.185.102.19/tcp/8115/p2p/QmXwUgF48ULy6hkgfqrEwEfuHW7WyWyWauueRDAYQHNDfN\"\n        },\n        {\n        \"peer_id\": 3,\n        \"is_outbound\": true,\n        \"latency_ms\": \"0x8c\",\n         \"address\": \"/ip4/18.185.102.19/tcp/8115/p2p/QmXwUgF48ULy6hkgfqrEwEfuHW7WyWyWauueRDAYQHNDfN\"\n        }\n     ]\n    },\n     \"version\": \"0.100.0 (abc123def 2023-12-01)\"\n   },\n   \"id\": 1\n  }\n ```\n",
+      "name": "get_overview",
+      "params": [
+        {
+          "name": "refresh",
+          "schema": {
+            "format": "uint32",
+            "minimum": 0,
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        }
+      ],
+      "result": {
+        "name": "get_overview",
+        "schema": {
+          "$ref": "#/components/schemas/Overview"
+        }
+      }
+    }
+  ],
+  "openrpc": "1.2.6"
+}

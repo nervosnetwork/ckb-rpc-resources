@@ -3,14 +3,22 @@
     "schemas": {
       "CellOutput": {
         "additionalProperties": false,
-        "description": "The fields of an output cell except the cell data.\n\n## Examples\n\n```\n # serde_json::from_str::<ckb_jsonrpc_types::CellOutput>(r#\"\n {\n   \"capacity\": \"0x2540be400\",\n   \"lock\": {\n     \"code_hash\": \"0x28e83a1277d48add8e72fadaa9248559e1b632bab2bd60b27955ebc4c03800a5\",\n     \"hash_type\": \"data\",\n     \"args\": \"0x\"\n   },\n   \"type\": null\n }\n # \"#).unwrap();\n```",
+        "description": "The fields of an output cell except the cell data.\n\n## Examples\n\n```\n# serde_json::from_str::<ckb_jsonrpc_types::CellOutput>(r#\"\n{\n  \"capacity\": \"0x2540be400\",\n  \"lock\": {\n    \"code_hash\": \"0x28e83a1277d48add8e72fadaa9248559e1b632bab2bd60b27955ebc4c03800a5\",\n    \"hash_type\": \"data\",\n    \"args\": \"0x\"\n  },\n  \"type\": null\n}\n# \"#).unwrap();\n```",
         "properties": {
           "capacity": {
-            "$ref": "#/components/schemas/Uint64",
-            "description": "The cell capacity.\n\nThe capacity of a cell is the value of the cell in Shannons. It is also the upper limit of the cell occupied storage size where every 100,000,000 Shannons give 1-byte storage."
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
+            "description": "The cell capacity.\n\nThe capacity of a cell is the value of the cell in Shannons. It is also the upper limit of\nthe cell occupied storage size where every 100,000,000 Shannons give 1-byte storage."
           },
           "lock": {
-            "$ref": "#/components/schemas/Script",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Script"
+              }
+            ],
             "description": "The lock script."
           },
           "type": {
@@ -35,7 +43,8 @@
         "description": "The 32-byte fixed-length binary data.\n\nThe name comes from the number of bits in the data.\n\nIn JSONRPC, it is encoded as a 0x-prefixed hex string.",
         "items": {
           "format": "uint8",
-          "minimum": 0.0,
+          "maximum": 255,
+          "minimum": 0,
           "type": "integer"
         },
         "maxItems": 32,
@@ -46,15 +55,27 @@
         "description": "Live cell",
         "properties": {
           "block_number": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "the number of the transaction committed in the block"
           },
           "out_point": {
-            "$ref": "#/components/schemas/OutPoint",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/OutPoint"
+              }
+            ],
             "description": "reference to a cell via transaction hash and output index"
           },
           "output": {
-            "$ref": "#/components/schemas/CellOutput",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CellOutput"
+              }
+            ],
             "description": "the fields of an output cell"
           },
           "output_data": {
@@ -69,14 +90,18 @@
             "description": "the cell data"
           },
           "tx_index": {
-            "$ref": "#/components/schemas/Uint32",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint32"
+              }
+            ],
             "description": "the position index of the transaction committed in the block"
           }
         },
         "required": [
-          "block_number",
-          "out_point",
           "output",
+          "out_point",
+          "block_number",
           "tx_index"
         ],
         "type": "object"
@@ -85,17 +110,13 @@
         "description": "Cell type",
         "oneOf": [
           {
+            "const": "input",
             "description": "Input",
-            "enum": [
-              "input"
-            ],
             "type": "string"
           },
           {
+            "const": "output",
             "description": "Output",
-            "enum": [
-              "output"
-            ],
             "type": "string"
           }
         ]
@@ -104,22 +125,34 @@
         "description": "Cells capacity",
         "properties": {
           "block_hash": {
-            "$ref": "#/components/schemas/H256",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/H256"
+              }
+            ],
             "description": "indexed tip block hash"
           },
           "block_number": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "indexed tip block number"
           },
           "capacity": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "total capacity"
           }
         },
         "required": [
+          "capacity",
           "block_hash",
-          "block_number",
-          "capacity"
+          "block_number"
         ],
         "type": "object"
       },
@@ -127,26 +160,26 @@
         "description": "Order Desc | Asc",
         "oneOf": [
           {
+            "const": "desc",
             "description": "Descending order",
-            "enum": [
-              "desc"
-            ],
             "type": "string"
           },
           {
+            "const": "asc",
             "description": "Ascending order",
-            "enum": [
-              "asc"
-            ],
             "type": "string"
           }
         ]
       },
-      "IndexerPagination_for_IndexerCell": {
+      "IndexerPagination": {
         "description": "IndexerPagination wraps objects array and last_cursor to provide paging",
         "properties": {
           "last_cursor": {
-            "$ref": "#/components/schemas/JsonBytes",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/JsonBytes"
+              }
+            ],
             "description": "pagination parameter"
           },
           "objects": {
@@ -158,16 +191,20 @@
           }
         },
         "required": [
-          "last_cursor",
-          "objects"
+          "objects",
+          "last_cursor"
         ],
         "type": "object"
       },
-      "IndexerPagination_for_IndexerTx": {
+      "IndexerPagination2": {
         "description": "IndexerPagination wraps objects array and last_cursor to provide paging",
         "properties": {
           "last_cursor": {
-            "$ref": "#/components/schemas/JsonBytes",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/JsonBytes"
+              }
+            ],
             "description": "pagination parameter"
           },
           "objects": {
@@ -179,26 +216,31 @@
           }
         },
         "required": [
-          "last_cursor",
-          "objects"
+          "objects",
+          "last_cursor"
         ],
         "type": "object"
+      },
+      "IndexerRange": {
+        "description": "A array represent (half-open) range bounded inclusively below and exclusively above [start, end).\n\n## Examples\n\n|            JSON          |            range             |\n| -------------------------| ---------------------------- |\n| [\"0x0\", \"0x2\"]           |          [0, 2)              |\n| [\"0x0\", \"0x174876e801\"]  |          [0, 100000000001)   |",
+        "items": {
+          "$ref": "#/components/schemas/Uint64"
+        },
+        "maxItems": 2,
+        "minItems": 2,
+        "type": "array"
       },
       "IndexerScriptType": {
         "description": "ScriptType `Lock` | `Type`",
         "oneOf": [
           {
+            "const": "lock",
             "description": "Lock",
-            "enum": [
-              "lock"
-            ],
             "type": "string"
           },
           {
+            "const": "type",
             "description": "Type",
-            "enum": [
-              "type"
-            ],
             "type": "string"
           }
         ]
@@ -225,7 +267,11 @@
             ]
           },
           "script": {
-            "$ref": "#/components/schemas/Script",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Script"
+              }
+            ],
             "description": "Script"
           },
           "script_search_mode": {
@@ -240,7 +286,11 @@
             "description": "Script search mode, optional default is `prefix`, means search script with prefix"
           },
           "script_type": {
-            "$ref": "#/components/schemas/IndexerScriptType",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/IndexerScriptType"
+              }
+            ],
             "description": "Script Type"
           },
           "with_data": {
@@ -261,28 +311,26 @@
         "description": "IndexerSearchKeyFilter represent indexer params `filter`",
         "properties": {
           "block_range": {
-            "description": "filter cells by block number range",
-            "items": {
-              "$ref": "#/components/schemas/Uint64"
-            },
-            "maxItems": 2,
-            "minItems": 2,
-            "type": [
-              "array",
-              "null"
-            ]
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IndexerRange"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "filter cells by block number range"
           },
           "output_capacity_range": {
-            "description": "filter cells by output capacity range",
-            "items": {
-              "$ref": "#/components/schemas/Uint64"
-            },
-            "maxItems": 2,
-            "minItems": 2,
-            "type": [
-              "array",
-              "null"
-            ]
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IndexerRange"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "filter cells by output capacity range"
           },
           "output_data": {
             "anyOf": [
@@ -307,16 +355,15 @@
             "description": "output data filter mode, optional default is `prefix`"
           },
           "output_data_len_range": {
-            "description": "filter cells by output data len range",
-            "items": {
-              "$ref": "#/components/schemas/Uint64"
-            },
-            "maxItems": 2,
-            "minItems": 2,
-            "type": [
-              "array",
-              "null"
-            ]
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IndexerRange"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "filter cells by output data len range"
           },
           "script": {
             "anyOf": [
@@ -330,16 +377,15 @@
             "description": "if search script type is lock, filter cells by type script prefix, and vice versa"
           },
           "script_len_range": {
-            "description": "filter cells by script len range",
-            "items": {
-              "$ref": "#/components/schemas/Uint64"
-            },
-            "maxItems": 2,
-            "minItems": 2,
-            "type": [
-              "array",
-              "null"
-            ]
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IndexerRange"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "filter cells by script len range"
           }
         },
         "type": "object"
@@ -348,24 +394,18 @@
         "description": "IndexerSearchMode represent search mode, default is prefix search",
         "oneOf": [
           {
+            "const": "prefix",
             "description": "Mode `prefix` search with prefix",
-            "enum": [
-              "prefix"
-            ],
             "type": "string"
           },
           {
+            "const": "exact",
             "description": "Mode `exact` search with exact match",
-            "enum": [
-              "exact"
-            ],
             "type": "string"
           },
           {
+            "const": "partial",
             "description": "Mode `partial` search with partial match",
-            "enum": [
-              "partial"
-            ],
             "type": "string"
           }
         ]
@@ -374,11 +414,19 @@
         "description": "Indexer tip information",
         "properties": {
           "block_hash": {
-            "$ref": "#/components/schemas/H256",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/H256"
+              }
+            ],
             "description": "indexed tip block hash"
           },
           "block_number": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "indexed tip block number"
           }
         },
@@ -391,12 +439,20 @@
       "IndexerTx": {
         "anyOf": [
           {
-            "$ref": "#/components/schemas/IndexerTxWithCell",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/IndexerTxWithCell"
+              }
+            ],
             "description": "## Fields\n\n`IndexerCellType` is equivalent to `\"input\" | \"output\"`.\n\n`IndexerTxWithCell` is a JSON object with the following fields.\n*   `tx_hash`: [`H256`] - transaction hash\n*   `block_number`: [`BlockNumber`] - the number of the transaction committed in the block\n*   `tx_index`: [`Uint32`] - the position index of the transaction committed in the block\n*   `io_index`: [`Uint32`] - the position index of the cell in the transaction inputs or outputs\n*   `io_type`: [`IndexerCellType`] - io type",
             "title": "Ungrouped format represent as `IndexerTxWithCell`"
           },
           {
-            "$ref": "#/components/schemas/IndexerTxWithCells",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/IndexerTxWithCells"
+              }
+            ],
             "description": "## Fields\n\n`IndexerCellType` is equivalent to `\"input\" | \"output\"`.\n\n`IndexerTxWithCells` is a JSON object with the following fields.\n*   `tx_hash`: [`H256`] - transaction hash\n*   `block_number`: [`BlockNumber`] - the number of the transaction committed in the block\n*   `tx_index`: [`Uint32`]- the position index of the transaction committed in the block\n*   `cells`: Array <(IndexerCellType, Uint32)>",
             "title": "Grouped format represent as `IndexerTxWithCells`"
           }
@@ -407,32 +463,52 @@
         "description": "Ungrouped Tx inner type",
         "properties": {
           "block_number": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "the number of the transaction committed in the block"
           },
           "io_index": {
-            "$ref": "#/components/schemas/Uint32",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint32"
+              }
+            ],
             "description": "the position index of the cell in the transaction inputs or outputs"
           },
           "io_type": {
-            "$ref": "#/components/schemas/IndexerCellType",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/IndexerCellType"
+              }
+            ],
             "description": "io type"
           },
           "tx_hash": {
-            "$ref": "#/components/schemas/H256",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/H256"
+              }
+            ],
             "description": "transaction hash"
           },
           "tx_index": {
-            "$ref": "#/components/schemas/Uint32",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint32"
+              }
+            ],
             "description": "the position index of the transaction committed in the block"
           }
         },
         "required": [
-          "block_number",
-          "io_index",
-          "io_type",
           "tx_hash",
-          "tx_index"
+          "block_number",
+          "tx_index",
+          "io_index",
+          "io_type"
         ],
         "type": "object"
       },
@@ -440,7 +516,11 @@
         "description": "Grouped Tx inner type",
         "properties": {
           "block_number": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "the number of the transaction committed in the block"
           },
           "cells": {
@@ -461,19 +541,27 @@
             "type": "array"
           },
           "tx_hash": {
-            "$ref": "#/components/schemas/H256",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/H256"
+              }
+            ],
             "description": "transaction hash"
           },
           "tx_index": {
-            "$ref": "#/components/schemas/Uint32",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint32"
+              }
+            ],
             "description": "the position index of the transaction committed in the block"
           }
         },
         "required": [
-          "block_number",
-          "cells",
           "tx_hash",
-          "tx_index"
+          "block_number",
+          "tx_index",
+          "cells"
         ],
         "type": "object"
       },
@@ -482,88 +570,725 @@
       },
       "OutPoint": {
         "additionalProperties": false,
-        "description": "Reference to a cell via transaction hash and output index.\n\n## Examples\n\n```\n # serde_json::from_str::<ckb_jsonrpc_types::OutPoint>(r#\"\n {\n   \"index\": \"0x0\",\n   \"tx_hash\": \"0x365698b50ca0da75dca2c87f9e7b563811d3b5813736b8cc62cc3b106faceb17\"\n }\n # \"#).unwrap();\n```",
+        "description": "Reference to a cell via transaction hash and output index.\n\n## Examples\n\n```\n# serde_json::from_str::<ckb_jsonrpc_types::OutPoint>(r#\"\n{\n  \"index\": \"0x0\",\n  \"tx_hash\": \"0x365698b50ca0da75dca2c87f9e7b563811d3b5813736b8cc62cc3b106faceb17\"\n}\n# \"#).unwrap();\n```",
         "properties": {
           "index": {
-            "$ref": "#/components/schemas/Uint32",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint32"
+              }
+            ],
             "description": "The output index of the cell in the transaction specified by `tx_hash`."
           },
           "tx_hash": {
-            "$ref": "#/components/schemas/H256",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/H256"
+              }
+            ],
             "description": "Transaction hash in which the cell is an output."
           }
         },
         "required": [
-          "index",
-          "tx_hash"
+          "tx_hash",
+          "index"
         ],
         "type": "object"
       },
       "Script": {
         "additionalProperties": false,
-        "description": "Describes the lock script and type script for a cell.\n\n## Examples\n\n```\n # serde_json::from_str::<ckb_jsonrpc_types::Script>(r#\"\n {\n   \"code_hash\": \"0x28e83a1277d48add8e72fadaa9248559e1b632bab2bd60b27955ebc4c03800a5\",\n   \"hash_type\": \"data\",\n   \"args\": \"0x\"\n }\n # \"#).unwrap();\n```",
+        "description": "Describes the lock script and type script for a cell.\n\n## Examples\n\n```\n# serde_json::from_str::<ckb_jsonrpc_types::Script>(r#\"\n{\n  \"code_hash\": \"0x28e83a1277d48add8e72fadaa9248559e1b632bab2bd60b27955ebc4c03800a5\",\n  \"hash_type\": \"data\",\n  \"args\": \"0x\"\n}\n# \"#).unwrap();\n```",
         "properties": {
           "args": {
-            "$ref": "#/components/schemas/JsonBytes",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/JsonBytes"
+              }
+            ],
             "description": "Arguments for script."
           },
           "code_hash": {
-            "$ref": "#/components/schemas/H256",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/H256"
+              }
+            ],
             "description": "The hash used to match the script code."
           },
           "hash_type": {
-            "$ref": "#/components/schemas/ScriptHashType",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ScriptHashType"
+              }
+            ],
             "description": "Specifies how to use the `code_hash` to match the script code."
           }
         },
         "required": [
-          "args",
           "code_hash",
-          "hash_type"
+          "hash_type",
+          "args"
         ],
         "type": "object"
       },
       "ScriptHashType": {
-        "description": "Specifies how the script `code_hash` is used to match the script code and how to run the code.\n\nAllowed kinds: \"data\", \"type\", \"data1\" and \"data2\"\n\nRefer to the section [Code Locating](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0022-transaction-structure/0022-transaction-structure.md#code-locating) and [Upgradable Script](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0022-transaction-structure/0022-transaction-structure.md#upgradable-script) in the RFC *CKB Transaction Structure*.\n\nThe hash type is split into the high 7 bits and the low 1 bit, when the low 1 bit is 1, it indicates the type, when the low 1 bit is 0, it indicates the data, and then it relies on the high 7 bits to indicate that the data actually corresponds to the version.",
+        "description": "Specifies how the script `code_hash` is used to match the script code and how to run the code.\n\nAllowed kinds: \"data\", \"type\", \"data1\" and \"data2\"\n\nRefer to the section [Code Locating](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0022-transaction-structure/0022-transaction-structure.md#code-locating)\nand [Upgradable Script](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0022-transaction-structure/0022-transaction-structure.md#upgradable-script)\nin the RFC *CKB Transaction Structure*.\n\nThe hash type is split into the high 7 bits and the low 1 bit,\nwhen the low 1 bit is 1, it indicates the type,\nwhen the low 1 bit is 0, it indicates the data,\nand then it relies on the high 7 bits to indicate\nthat the data actually corresponds to the version.",
         "oneOf": [
           {
-            "description": "Type \"data\" matches script code via cell data hash, and run the script code in v0 CKB VM.",
-            "enum": [
-              "data"
-            ],
+            "const": "data",
+            "description": "Type \"data\" matches script code via cell data hash, and runs the script code in v0 CKB VM",
             "type": "string"
           },
           {
+            "const": "type",
             "description": "Type \"type\" matches script code via cell type script hash.",
-            "enum": [
-              "type"
-            ],
             "type": "string"
           },
           {
-            "description": "Type \"data1\" matches script code via cell data hash, and run the script code in v1 CKB VM.",
-            "enum": [
-              "data1"
-            ],
+            "const": "data1",
+            "description": "Type \"data1\" matches script code via cell data hash, and runs the script code in v1 CKB VM",
             "type": "string"
           },
           {
-            "description": "Type \"data2\" matches script code via cell data hash, and run the script code in v2 CKB VM.",
-            "enum": [
-              "data2"
-            ],
+            "const": "data2",
+            "description": "Type \"data2\" matches script code via cell data hash, and runs the script code in v2 CKB VM",
+            "type": "string"
+          },
+          {
+            "const": "data3",
+            "description": "Type \"data3\" matches script code via cell data hash, and runs the script code in v3 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data4",
+            "description": "Type \"data4\" matches script code via cell data hash, and runs the script code in v4 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data5",
+            "description": "Type \"data5\" matches script code via cell data hash, and runs the script code in v5 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data6",
+            "description": "Type \"data6\" matches script code via cell data hash, and runs the script code in v6 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data7",
+            "description": "Type \"data7\" matches script code via cell data hash, and runs the script code in v7 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data8",
+            "description": "Type \"data8\" matches script code via cell data hash, and runs the script code in v8 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data9",
+            "description": "Type \"data9\" matches script code via cell data hash, and runs the script code in v9 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data10",
+            "description": "Type \"data10\" matches script code via cell data hash, and runs the script code in v10 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data11",
+            "description": "Type \"data11\" matches script code via cell data hash, and runs the script code in v11 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data12",
+            "description": "Type \"data12\" matches script code via cell data hash, and runs the script code in v12 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data13",
+            "description": "Type \"data13\" matches script code via cell data hash, and runs the script code in v13 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data14",
+            "description": "Type \"data14\" matches script code via cell data hash, and runs the script code in v14 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data15",
+            "description": "Type \"data15\" matches script code via cell data hash, and runs the script code in v15 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data16",
+            "description": "Type \"data16\" matches script code via cell data hash, and runs the script code in v16 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data17",
+            "description": "Type \"data17\" matches script code via cell data hash, and runs the script code in v17 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data18",
+            "description": "Type \"data18\" matches script code via cell data hash, and runs the script code in v18 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data19",
+            "description": "Type \"data19\" matches script code via cell data hash, and runs the script code in v19 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data20",
+            "description": "Type \"data20\" matches script code via cell data hash, and runs the script code in v20 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data21",
+            "description": "Type \"data21\" matches script code via cell data hash, and runs the script code in v21 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data22",
+            "description": "Type \"data22\" matches script code via cell data hash, and runs the script code in v22 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data23",
+            "description": "Type \"data23\" matches script code via cell data hash, and runs the script code in v23 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data24",
+            "description": "Type \"data24\" matches script code via cell data hash, and runs the script code in v24 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data25",
+            "description": "Type \"data25\" matches script code via cell data hash, and runs the script code in v25 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data26",
+            "description": "Type \"data26\" matches script code via cell data hash, and runs the script code in v26 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data27",
+            "description": "Type \"data27\" matches script code via cell data hash, and runs the script code in v27 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data28",
+            "description": "Type \"data28\" matches script code via cell data hash, and runs the script code in v28 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data29",
+            "description": "Type \"data29\" matches script code via cell data hash, and runs the script code in v29 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data30",
+            "description": "Type \"data30\" matches script code via cell data hash, and runs the script code in v30 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data31",
+            "description": "Type \"data31\" matches script code via cell data hash, and runs the script code in v31 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data32",
+            "description": "Type \"data32\" matches script code via cell data hash, and runs the script code in v32 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data33",
+            "description": "Type \"data33\" matches script code via cell data hash, and runs the script code in v33 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data34",
+            "description": "Type \"data34\" matches script code via cell data hash, and runs the script code in v34 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data35",
+            "description": "Type \"data35\" matches script code via cell data hash, and runs the script code in v35 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data36",
+            "description": "Type \"data36\" matches script code via cell data hash, and runs the script code in v36 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data37",
+            "description": "Type \"data37\" matches script code via cell data hash, and runs the script code in v37 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data38",
+            "description": "Type \"data38\" matches script code via cell data hash, and runs the script code in v38 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data39",
+            "description": "Type \"data39\" matches script code via cell data hash, and runs the script code in v39 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data40",
+            "description": "Type \"data40\" matches script code via cell data hash, and runs the script code in v40 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data41",
+            "description": "Type \"data41\" matches script code via cell data hash, and runs the script code in v41 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data42",
+            "description": "Type \"data42\" matches script code via cell data hash, and runs the script code in v42 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data43",
+            "description": "Type \"data43\" matches script code via cell data hash, and runs the script code in v43 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data44",
+            "description": "Type \"data44\" matches script code via cell data hash, and runs the script code in v44 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data45",
+            "description": "Type \"data45\" matches script code via cell data hash, and runs the script code in v45 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data46",
+            "description": "Type \"data46\" matches script code via cell data hash, and runs the script code in v46 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data47",
+            "description": "Type \"data47\" matches script code via cell data hash, and runs the script code in v47 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data48",
+            "description": "Type \"data48\" matches script code via cell data hash, and runs the script code in v48 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data49",
+            "description": "Type \"data49\" matches script code via cell data hash, and runs the script code in v49 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data50",
+            "description": "Type \"data50\" matches script code via cell data hash, and runs the script code in v50 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data51",
+            "description": "Type \"data51\" matches script code via cell data hash, and runs the script code in v51 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data52",
+            "description": "Type \"data52\" matches script code via cell data hash, and runs the script code in v52 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data53",
+            "description": "Type \"data53\" matches script code via cell data hash, and runs the script code in v53 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data54",
+            "description": "Type \"data54\" matches script code via cell data hash, and runs the script code in v54 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data55",
+            "description": "Type \"data55\" matches script code via cell data hash, and runs the script code in v55 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data56",
+            "description": "Type \"data56\" matches script code via cell data hash, and runs the script code in v56 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data57",
+            "description": "Type \"data57\" matches script code via cell data hash, and runs the script code in v57 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data58",
+            "description": "Type \"data58\" matches script code via cell data hash, and runs the script code in v58 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data59",
+            "description": "Type \"data59\" matches script code via cell data hash, and runs the script code in v59 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data60",
+            "description": "Type \"data60\" matches script code via cell data hash, and runs the script code in v60 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data61",
+            "description": "Type \"data61\" matches script code via cell data hash, and runs the script code in v61 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data62",
+            "description": "Type \"data62\" matches script code via cell data hash, and runs the script code in v62 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data63",
+            "description": "Type \"data63\" matches script code via cell data hash, and runs the script code in v63 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data64",
+            "description": "Type \"data64\" matches script code via cell data hash, and runs the script code in v64 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data65",
+            "description": "Type \"data65\" matches script code via cell data hash, and runs the script code in v65 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data66",
+            "description": "Type \"data66\" matches script code via cell data hash, and runs the script code in v66 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data67",
+            "description": "Type \"data67\" matches script code via cell data hash, and runs the script code in v67 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data68",
+            "description": "Type \"data68\" matches script code via cell data hash, and runs the script code in v68 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data69",
+            "description": "Type \"data69\" matches script code via cell data hash, and runs the script code in v69 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data70",
+            "description": "Type \"data70\" matches script code via cell data hash, and runs the script code in v70 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data71",
+            "description": "Type \"data71\" matches script code via cell data hash, and runs the script code in v71 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data72",
+            "description": "Type \"data72\" matches script code via cell data hash, and runs the script code in v72 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data73",
+            "description": "Type \"data73\" matches script code via cell data hash, and runs the script code in v73 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data74",
+            "description": "Type \"data74\" matches script code via cell data hash, and runs the script code in v74 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data75",
+            "description": "Type \"data75\" matches script code via cell data hash, and runs the script code in v75 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data76",
+            "description": "Type \"data76\" matches script code via cell data hash, and runs the script code in v76 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data77",
+            "description": "Type \"data77\" matches script code via cell data hash, and runs the script code in v77 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data78",
+            "description": "Type \"data78\" matches script code via cell data hash, and runs the script code in v78 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data79",
+            "description": "Type \"data79\" matches script code via cell data hash, and runs the script code in v79 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data80",
+            "description": "Type \"data80\" matches script code via cell data hash, and runs the script code in v80 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data81",
+            "description": "Type \"data81\" matches script code via cell data hash, and runs the script code in v81 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data82",
+            "description": "Type \"data82\" matches script code via cell data hash, and runs the script code in v82 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data83",
+            "description": "Type \"data83\" matches script code via cell data hash, and runs the script code in v83 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data84",
+            "description": "Type \"data84\" matches script code via cell data hash, and runs the script code in v84 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data85",
+            "description": "Type \"data85\" matches script code via cell data hash, and runs the script code in v85 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data86",
+            "description": "Type \"data86\" matches script code via cell data hash, and runs the script code in v86 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data87",
+            "description": "Type \"data87\" matches script code via cell data hash, and runs the script code in v87 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data88",
+            "description": "Type \"data88\" matches script code via cell data hash, and runs the script code in v88 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data89",
+            "description": "Type \"data89\" matches script code via cell data hash, and runs the script code in v89 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data90",
+            "description": "Type \"data90\" matches script code via cell data hash, and runs the script code in v90 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data91",
+            "description": "Type \"data91\" matches script code via cell data hash, and runs the script code in v91 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data92",
+            "description": "Type \"data92\" matches script code via cell data hash, and runs the script code in v92 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data93",
+            "description": "Type \"data93\" matches script code via cell data hash, and runs the script code in v93 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data94",
+            "description": "Type \"data94\" matches script code via cell data hash, and runs the script code in v94 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data95",
+            "description": "Type \"data95\" matches script code via cell data hash, and runs the script code in v95 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data96",
+            "description": "Type \"data96\" matches script code via cell data hash, and runs the script code in v96 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data97",
+            "description": "Type \"data97\" matches script code via cell data hash, and runs the script code in v97 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data98",
+            "description": "Type \"data98\" matches script code via cell data hash, and runs the script code in v98 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data99",
+            "description": "Type \"data99\" matches script code via cell data hash, and runs the script code in v99 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data100",
+            "description": "Type \"data100\" matches script code via cell data hash, and runs the script code in v100 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data101",
+            "description": "Type \"data101\" matches script code via cell data hash, and runs the script code in v101 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data102",
+            "description": "Type \"data102\" matches script code via cell data hash, and runs the script code in v102 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data103",
+            "description": "Type \"data103\" matches script code via cell data hash, and runs the script code in v103 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data104",
+            "description": "Type \"data104\" matches script code via cell data hash, and runs the script code in v104 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data105",
+            "description": "Type \"data105\" matches script code via cell data hash, and runs the script code in v105 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data106",
+            "description": "Type \"data106\" matches script code via cell data hash, and runs the script code in v106 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data107",
+            "description": "Type \"data107\" matches script code via cell data hash, and runs the script code in v107 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data108",
+            "description": "Type \"data108\" matches script code via cell data hash, and runs the script code in v108 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data109",
+            "description": "Type \"data109\" matches script code via cell data hash, and runs the script code in v109 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data110",
+            "description": "Type \"data110\" matches script code via cell data hash, and runs the script code in v110 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data111",
+            "description": "Type \"data111\" matches script code via cell data hash, and runs the script code in v111 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data112",
+            "description": "Type \"data112\" matches script code via cell data hash, and runs the script code in v112 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data113",
+            "description": "Type \"data113\" matches script code via cell data hash, and runs the script code in v113 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data114",
+            "description": "Type \"data114\" matches script code via cell data hash, and runs the script code in v114 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data115",
+            "description": "Type \"data115\" matches script code via cell data hash, and runs the script code in v115 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data116",
+            "description": "Type \"data116\" matches script code via cell data hash, and runs the script code in v116 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data117",
+            "description": "Type \"data117\" matches script code via cell data hash, and runs the script code in v117 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data118",
+            "description": "Type \"data118\" matches script code via cell data hash, and runs the script code in v118 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data119",
+            "description": "Type \"data119\" matches script code via cell data hash, and runs the script code in v119 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data120",
+            "description": "Type \"data120\" matches script code via cell data hash, and runs the script code in v120 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data121",
+            "description": "Type \"data121\" matches script code via cell data hash, and runs the script code in v121 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data122",
+            "description": "Type \"data122\" matches script code via cell data hash, and runs the script code in v122 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data123",
+            "description": "Type \"data123\" matches script code via cell data hash, and runs the script code in v123 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data124",
+            "description": "Type \"data124\" matches script code via cell data hash, and runs the script code in v124 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data125",
+            "description": "Type \"data125\" matches script code via cell data hash, and runs the script code in v125 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data126",
+            "description": "Type \"data126\" matches script code via cell data hash, and runs the script code in v126 CKB VM.",
+            "type": "string"
+          },
+          {
+            "const": "data127",
+            "description": "Type \"data127\" matches script code via cell data hash, and runs the script code in v127 CKB VM.",
             "type": "string"
           }
         ]
       },
       "Uint32": {
         "format": "uint32",
-        "minimum": 0.0,
+        "minimum": 0,
         "type": "integer"
       },
       "Uint64": {
         "format": "uint64",
-        "minimum": 0.0,
+        "minimum": 0,
         "type": "integer"
       }
     }
@@ -571,7 +1296,7 @@
   "info": {
     "description": " RPC Module Indexer.",
     "title": "indexer_rpc",
-    "version": "0.115.0-pre"
+    "version": "0.204.0"
   },
   "methods": [
     {
@@ -593,7 +1318,7 @@
       }
     },
     {
-      "description": " Returns the live cells collection by the lock or type script.\n\n ## Params\n\n * search_key:\n     - script - Script, supports prefix search\n     - script_type - enum, lock | type\n     - script_search_mode - enum, prefix | exact\n     - filter - filter cells by following conditions, all conditions are optional\n          - script: if search script type is lock, filter cells by type script prefix, and vice versa\n          - script_len_range: [u64; 2], filter cells by script len range, [inclusive, exclusive]\n          - output_data: filter cells by output data\n          - output_data_filter_mode: enum, prefix | exact | partial\n          - output_data_len_range: [u64; 2], filter cells by output data len range, [inclusive, exclusive]\n          - output_capacity_range: [u64; 2], filter cells by output capacity range, [inclusive, exclusive]\n          - block_range: [u64; 2], filter cells by block number range, [inclusive, exclusive]\n     - with_data - bool, optional default is `true`, if with_data is set to false, the field of returning cell.output_data is null in the result\n * order: enum, asc | desc\n * limit: result size limit\n * after: pagination parameter, optional\n\n ## Returns\n\n If the number of objects is less than the requested `limit`, it indicates that these are the last page of get_cells.\n\n * objects:\n     - output: the fields of an output cell\n     - output_data: the cell data\n     - out_point: reference to a cell via transaction hash and output index\n     - block_number: the number of the transaction committed in the block\n     - tx_index: the position index of the transaction committed in the block\n * last_cursor: pagination parameter\n\n ## Examples\n\n * get cells by lock script\n\n Request\n\n ```json\n {\n     \"id\": 2,\n     \"jsonrpc\": \"2.0\",\n     \"method\": \"get_cells\",\n     \"params\": [\n         {\n             \"script\": {\n                 \"code_hash\": \"0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8\",\n                 \"hash_type\": \"type\",\n                 \"args\": \"0x5989ae415bb667931a99896e5fbbfad9ba53a223\"\n             },\n             \"script_type\": \"lock\"\n         },\n         \"asc\",\n         \"0x64\"\n     ]\n }\n ```\n\n Response\n\n ```json\n    {\n     \"jsonrpc\": \"2.0\",\n     \"result\": {\n       \"last_cursor\": \"0x409bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8015989ae415bb667931a99896e5fbbfad9ba53a22300000000005b0f8c0000000100000000\",\n       \"objects\": [\n         {\n           \"block_number\": \"0x5b0e6d\",\n           \"out_point\": {\n             \"index\": \"0x0\",\n             \"tx_hash\": \"0xe8f2180dfba0cb15b45f771d520834515a5f8d7aa07f88894da88c22629b79e9\"\n           },\n           \"output\": {\n             \"capacity\": \"0x189640200\",\n             \"lock\": {\n               \"args\": \"0x5989ae415bb667931a99896e5fbbfad9ba53a223\",\n               \"code_hash\": \"0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8\",\n               \"hash_type\": \"type\"\n             },\n             \"type\": null\n           },\n           \"output_data\": \"0x\",\n           \"tx_index\": \"0x1\"\n         },\n         {\n           \"block_number\": \"0x5b0e90\",\n           \"out_point\": {\n             \"index\": \"0x0\",\n             \"tx_hash\": \"0xece3a27409bde2914fb7a1555d6bfca453ee46af73e665149ef549fd46ec1fc6\"\n           },\n           \"output\": {\n             \"capacity\": \"0x189640200\",\n             \"lock\": {\n               \"args\": \"0x5989ae415bb667931a99896e5fbbfad9ba53a223\",\n               \"code_hash\": \"0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8\",\n               \"hash_type\": \"type\"\n             },\n             \"type\": null\n           },\n           \"output_data\": \"0x\",\n           \"tx_index\": \"0x1\"\n         },\n         {\n           \"block_number\": \"0x5b0ead\",\n           \"out_point\": {\n             \"index\": \"0x1\",\n             \"tx_hash\": \"0x5c48768f91e3795b418c53211c76fd038c464a24c4aa7e35bbbb6ac5b219f581\"\n           },\n           \"output\": {\n             \"capacity\": \"0xe36dceec20\",\n             \"lock\": {\n               \"args\": \"0x5989ae415bb667931a99896e5fbbfad9ba53a223\",\n               \"code_hash\": \"0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8\",\n               \"hash_type\": \"type\"\n             },\n             \"type\": null\n           },\n           \"output_data\": \"0x\",\n           \"tx_index\": \"0x1\"\n         },\n         {\n           \"block_number\": \"0x5b0eeb\",\n           \"out_point\": {\n             \"index\": \"0x0\",\n             \"tx_hash\": \"0x90e6981d6a5692d92e54344dc0e12d213447710fa069cc19ddea874619b9ba48\"\n           },\n           \"output\": {\n             \"capacity\": \"0x174876e800\",\n             \"lock\": {\n               \"args\": \"0x5989ae415bb667931a99896e5fbbfad9ba53a223\",\n               \"code_hash\": \"0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8\",\n               \"hash_type\": \"type\"\n             },\n             \"type\": null\n           },\n           \"output_data\": \"0x\",\n           \"tx_index\": \"0x1\"\n         },\n         {\n           \"block_number\": \"0x5b0f8c\",\n           \"out_point\": {\n             \"index\": \"0x0\",\n             \"tx_hash\": \"0x9ea14510219ae97afa0275215fa77c3c015905281c953a3917a7fd036767429c\"\n           },\n           \"output\": {\n             \"capacity\": \"0x189640200\",\n             \"lock\": {\n               \"args\": \"0x5989ae415bb667931a99896e5fbbfad9ba53a223\",\n               \"code_hash\": \"0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8\",\n               \"hash_type\": \"type\"\n             },\n             \"type\": null\n           },\n           \"output_data\": \"0x\",\n           \"tx_index\": \"0x1\"\n         }\n       ]\n     },\n     \"id\": 2\n   }\n ```\n\n * get cells by lock script and filter by type script\n\n Request\n\n ```json\n {\n     \"id\": 2,\n     \"jsonrpc\": \"2.0\",\n     \"method\": \"get_cells\",\n     \"params\": [\n         {\n             \"script\": {\n                 \"code_hash\": \"0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63\",\n                 \"hash_type\": \"type\",\n                 \"args\": \"0x2a49720e721553d0614dff29454ee4e1f07d0707\"\n             },\n             \"script_type\": \"lock\",\n             \"filter\": {\n                 \"script\": {\n                     \"code_hash\": \"0xc5e5dcf215925f7ef4dfaf5f4b4f105bc321c02776d6e7d52a1db3fcd9d011a4\",\n                     \"hash_type\": \"type\",\n                     \"args\": \"0x8462b20277bcbaa30d821790b852fb322d55c2b12e750ea91ad7059bc98dda4b\"\n                 }\n             }\n         },\n         \"asc\",\n         \"0x64\"\n     ]\n }\n ```\n\n Response\n\n ```json\n {\n     \"jsonrpc\": \"2.0\",\n     \"result\": {\n       \"last_cursor\": \"0x4058c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63012a49720e721553d0614dff29454ee4e1f07d070700000000002adf870000000100000001\",\n       \"objects\": [\n         {\n           \"block_number\": \"0x2adf87\",\n           \"out_point\": {\n             \"index\": \"0x1\",\n             \"tx_hash\": \"0x04ecbc2df39e3682326a3b23c1bd2465e07eae2379ac0cc713834a1f79753779\"\n           },\n           \"output\": {\n             \"capacity\": \"0x436d81500\",\n             \"lock\": {\n               \"args\": \"0x2a49720e721553d0614dff29454ee4e1f07d0707\",\n               \"code_hash\": \"0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63\",\n               \"hash_type\": \"type\"\n             },\n             \"type\": {\n               \"args\": \"0x8462b20277bcbaa30d821790b852fb322d55c2b12e750ea91ad7059bc98dda4b\",\n               \"code_hash\": \"0xc5e5dcf215925f7ef4dfaf5f4b4f105bc321c02776d6e7d52a1db3fcd9d011a4\",\n               \"hash_type\": \"type\"\n             }\n           },\n           \"output_data\": \"0x0040d20853d746000000000000000000\",\n           \"tx_index\": \"0x1\"\n         }\n       ]\n     },\n     \"id\": 2\n }\n ```\n\n * get cells by lock script and filter empty type script by setting script_len_range to\n [0, 1), script_len is caculated by (code_hash + hash_type + args).len\n\n Request\n\n ```json\n {\n     \"id\": 2,\n     \"jsonrpc\": \"2.0\",\n     \"method\": \"get_cells\",\n     \"params\": [\n         {\n             \"script\": {\n                 \"code_hash\": \"0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63\",\n                 \"hash_type\": \"type\",\n                 \"args\": \"0x2a49720e721553d0614dff29454ee4e1f07d0707\"\n             },\n             \"script_type\": \"lock\",\n             \"filter\": {\n                 \"script_len_range\": [\"0x0\", \"0x1\"]\n             }\n         },\n         \"asc\",\n         \"0x64\"\n     ]\n }\n ```\n\n Response\n\n ```json\n {\n     \"jsonrpc\": \"2.0\",\n     \"result\": {\n       \"last_cursor\": \"0x4058c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63012a49720e721553d0614dff29454ee4e1f07d070700000000002adf830000000200000001\",\n       \"objects\": [\n         {\n           \"block_number\": \"0x2adf83\",\n           \"out_point\": {\n             \"index\": \"0x1\",\n             \"tx_hash\": \"0x23ec897027c1d2a2b39e2446162bac182f18581be048cb3896ad695559b6839e\"\n           },\n           \"output\": {\n             \"capacity\": \"0x54b42b70b4\",\n             \"lock\": {\n               \"args\": \"0x2a49720e721553d0614dff29454ee4e1f07d0707\",\n               \"code_hash\": \"0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63\",\n               \"hash_type\": \"type\"\n             },\n             \"type\": null\n           },\n           \"output_data\": \"0x\",\n           \"tx_index\": \"0x2\"\n         }\n       ]\n     },\n     \"id\": 2\n }\n ```\n\n * get cells by lock script and filter capacity range\n\n Request\n\n ```json\n {\n     \"id\": 2,\n     \"jsonrpc\": \"2.0\",\n     \"method\": \"get_cells\",\n     \"params\": [\n         {\n             \"script\": {\n                 \"code_hash\": \"0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8\",\n                 \"hash_type\": \"type\",\n                 \"args\": \"0x5989ae415bb667931a99896e5fbbfad9ba53a223\"\n             },\n             \"script_type\": \"lock\",\n             \"filter\": {\n                 \"output_capacity_range\": [\"0x0\", \"0x174876e801\"]\n             }\n         },\n         \"asc\",\n         \"0x64\"\n     ]\n }\n ```\n\n Response\n\n ```json\n {\n     \"jsonrpc\": \"2.0\",\n     \"result\": {\n       \"last_cursor\": \"0x409bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8015989ae415bb667931a99896e5fbbfad9ba53a22300000000005b59df0000000100000001\",\n       \"objects\": [\n         {\n           \"block_number\": \"0x5b59df\",\n           \"out_point\": {\n             \"index\": \"0x1\",\n             \"tx_hash\": \"0x21c4632a41140b828e9347ff80480b3e07be4e0a0b8d577565e7421fd5473194\"\n           },\n           \"output\": {\n             \"capacity\": \"0xe815b81c0\",\n             \"lock\": {\n               \"args\": \"0x5989ae415bb667931a99896e5fbbfad9ba53a223\",\n               \"code_hash\": \"0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8\",\n               \"hash_type\": \"type\"\n             },\n             \"type\": null\n           },\n           \"output_data\": \"0x\",\n           \"tx_index\": \"0x1\"\n         }\n       ]\n     },\n     \"id\": 2\n }\n ```",
+      "description": " Returns the live cells collection by the lock or type script.\n\n ## Params\n\n * search_key:\n     - script - Script, supports prefix search\n     - script_type - enum, lock | type\n     - script_search_mode - enum, prefix | exact\n     - filter - filter cells by following conditions, all conditions are optional\n          - script: if search script type is lock, filter cells by type script prefix, and vice versa\n          - script_len_range: [u64; 2], filter cells by script len range, [inclusive, exclusive]\n          - output_data: filter cells by output data\n          - output_data_filter_mode: enum, prefix | exact | partial\n          - output_data_len_range: [u64; 2], filter cells by output data len range, [inclusive, exclusive]\n          - output_capacity_range: [u64; 2], filter cells by output capacity range, [inclusive, exclusive]\n          - block_range: [u64; 2], filter cells by block number range, [inclusive, exclusive]\n     - with_data - bool, optional default is `true`, if with_data is set to false, the field of returning cell.output_data is null in the result\n * order: enum, asc | desc\n * limit: result size limit\n * after: pagination parameter, optional\n\n ## Returns\n\n If the number of objects is less than the requested `limit`, it indicates that these are the last page of get_cells.\n\n * objects:\n     - output: the fields of an output cell\n     - output_data: the cell data\n     - out_point: reference to a cell via transaction hash and output index\n     - block_number: the number of the transaction committed in the block\n     - tx_index: the position index of the transaction committed in the block\n * last_cursor: pagination parameter\n\n ## Examples\n\n * get cells by lock script\n\n Request\n\n ```json\n {\n     \"id\": 2,\n     \"jsonrpc\": \"2.0\",\n     \"method\": \"get_cells\",\n     \"params\": [\n         {\n             \"script\": {\n                 \"code_hash\": \"0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8\",\n                 \"hash_type\": \"type\",\n                 \"args\": \"0x5989ae415bb667931a99896e5fbbfad9ba53a223\"\n             },\n             \"script_type\": \"lock\"\n         },\n         \"asc\",\n         \"0x64\"\n     ]\n }\n ```\n\n Response\n\n ```json\n    {\n     \"jsonrpc\": \"2.0\",\n     \"result\": {\n       \"last_cursor\": \"0x409bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8015989ae415bb667931a99896e5fbbfad9ba53a22300000000005b0f8c0000000100000000\",\n       \"objects\": [\n         {\n           \"block_number\": \"0x5b0e6d\",\n           \"out_point\": {\n             \"index\": \"0x0\",\n             \"tx_hash\": \"0xe8f2180dfba0cb15b45f771d520834515a5f8d7aa07f88894da88c22629b79e9\"\n           },\n           \"output\": {\n             \"capacity\": \"0x189640200\",\n             \"lock\": {\n               \"args\": \"0x5989ae415bb667931a99896e5fbbfad9ba53a223\",\n               \"code_hash\": \"0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8\",\n               \"hash_type\": \"type\"\n             },\n             \"type\": null\n           },\n           \"output_data\": \"0x\",\n           \"tx_index\": \"0x1\"\n         },\n         {\n           \"block_number\": \"0x5b0e90\",\n           \"out_point\": {\n             \"index\": \"0x0\",\n             \"tx_hash\": \"0xece3a27409bde2914fb7a1555d6bfca453ee46af73e665149ef549fd46ec1fc6\"\n           },\n           \"output\": {\n             \"capacity\": \"0x189640200\",\n             \"lock\": {\n               \"args\": \"0x5989ae415bb667931a99896e5fbbfad9ba53a223\",\n               \"code_hash\": \"0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8\",\n               \"hash_type\": \"type\"\n             },\n             \"type\": null\n           },\n           \"output_data\": \"0x\",\n           \"tx_index\": \"0x1\"\n         },\n         {\n           \"block_number\": \"0x5b0ead\",\n           \"out_point\": {\n             \"index\": \"0x1\",\n             \"tx_hash\": \"0x5c48768f91e3795b418c53211c76fd038c464a24c4aa7e35bbbb6ac5b219f581\"\n           },\n           \"output\": {\n             \"capacity\": \"0xe36dceec20\",\n             \"lock\": {\n               \"args\": \"0x5989ae415bb667931a99896e5fbbfad9ba53a223\",\n               \"code_hash\": \"0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8\",\n               \"hash_type\": \"type\"\n             },\n             \"type\": null\n           },\n           \"output_data\": \"0x\",\n           \"tx_index\": \"0x1\"\n         },\n         {\n           \"block_number\": \"0x5b0eeb\",\n           \"out_point\": {\n             \"index\": \"0x0\",\n             \"tx_hash\": \"0x90e6981d6a5692d92e54344dc0e12d213447710fa069cc19ddea874619b9ba48\"\n           },\n           \"output\": {\n             \"capacity\": \"0x174876e800\",\n             \"lock\": {\n               \"args\": \"0x5989ae415bb667931a99896e5fbbfad9ba53a223\",\n               \"code_hash\": \"0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8\",\n               \"hash_type\": \"type\"\n             },\n             \"type\": null\n           },\n           \"output_data\": \"0x\",\n           \"tx_index\": \"0x1\"\n         },\n         {\n           \"block_number\": \"0x5b0f8c\",\n           \"out_point\": {\n             \"index\": \"0x0\",\n             \"tx_hash\": \"0x9ea14510219ae97afa0275215fa77c3c015905281c953a3917a7fd036767429c\"\n           },\n           \"output\": {\n             \"capacity\": \"0x189640200\",\n             \"lock\": {\n               \"args\": \"0x5989ae415bb667931a99896e5fbbfad9ba53a223\",\n               \"code_hash\": \"0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8\",\n               \"hash_type\": \"type\"\n             },\n             \"type\": null\n           },\n           \"output_data\": \"0x\",\n           \"tx_index\": \"0x1\"\n         }\n       ]\n     },\n     \"id\": 2\n   }\n ```\n\n * get cells by lock script and filter by type script\n\n Request\n\n ```json\n {\n     \"id\": 2,\n     \"jsonrpc\": \"2.0\",\n     \"method\": \"get_cells\",\n     \"params\": [\n         {\n             \"script\": {\n                 \"code_hash\": \"0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63\",\n                 \"hash_type\": \"type\",\n                 \"args\": \"0x2a49720e721553d0614dff29454ee4e1f07d0707\"\n             },\n             \"script_type\": \"lock\",\n             \"filter\": {\n                 \"script\": {\n                     \"code_hash\": \"0xc5e5dcf215925f7ef4dfaf5f4b4f105bc321c02776d6e7d52a1db3fcd9d011a4\",\n                     \"hash_type\": \"type\",\n                     \"args\": \"0x8462b20277bcbaa30d821790b852fb322d55c2b12e750ea91ad7059bc98dda4b\"\n                 }\n             }\n         },\n         \"asc\",\n         \"0x64\"\n     ]\n }\n ```\n\n Response\n\n ```json\n {\n     \"jsonrpc\": \"2.0\",\n     \"result\": {\n       \"last_cursor\": \"0x4058c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63012a49720e721553d0614dff29454ee4e1f07d070700000000002adf870000000100000001\",\n       \"objects\": [\n         {\n           \"block_number\": \"0x2adf87\",\n           \"out_point\": {\n             \"index\": \"0x1\",\n             \"tx_hash\": \"0x04ecbc2df39e3682326a3b23c1bd2465e07eae2379ac0cc713834a1f79753779\"\n           },\n           \"output\": {\n             \"capacity\": \"0x436d81500\",\n             \"lock\": {\n               \"args\": \"0x2a49720e721553d0614dff29454ee4e1f07d0707\",\n               \"code_hash\": \"0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63\",\n               \"hash_type\": \"type\"\n             },\n             \"type\": {\n               \"args\": \"0x8462b20277bcbaa30d821790b852fb322d55c2b12e750ea91ad7059bc98dda4b\",\n               \"code_hash\": \"0xc5e5dcf215925f7ef4dfaf5f4b4f105bc321c02776d6e7d52a1db3fcd9d011a4\",\n               \"hash_type\": \"type\"\n             }\n           },\n           \"output_data\": \"0x0040d20853d746000000000000000000\",\n           \"tx_index\": \"0x1\"\n         }\n       ]\n     },\n     \"id\": 2\n }\n ```\n\n * get cells by lock script and filter empty type script by setting script_len_range to\n [0, 1), script_len is calculated by (code_hash + hash_type + args).len\n\n Request\n\n ```json\n {\n     \"id\": 2,\n     \"jsonrpc\": \"2.0\",\n     \"method\": \"get_cells\",\n     \"params\": [\n         {\n             \"script\": {\n                 \"code_hash\": \"0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63\",\n                 \"hash_type\": \"type\",\n                 \"args\": \"0x2a49720e721553d0614dff29454ee4e1f07d0707\"\n             },\n             \"script_type\": \"lock\",\n             \"filter\": {\n                 \"script_len_range\": [\"0x0\", \"0x1\"]\n             }\n         },\n         \"asc\",\n         \"0x64\"\n     ]\n }\n ```\n\n Response\n\n ```json\n {\n     \"jsonrpc\": \"2.0\",\n     \"result\": {\n       \"last_cursor\": \"0x4058c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63012a49720e721553d0614dff29454ee4e1f07d070700000000002adf830000000200000001\",\n       \"objects\": [\n         {\n           \"block_number\": \"0x2adf83\",\n           \"out_point\": {\n             \"index\": \"0x1\",\n             \"tx_hash\": \"0x23ec897027c1d2a2b39e2446162bac182f18581be048cb3896ad695559b6839e\"\n           },\n           \"output\": {\n             \"capacity\": \"0x54b42b70b4\",\n             \"lock\": {\n               \"args\": \"0x2a49720e721553d0614dff29454ee4e1f07d0707\",\n               \"code_hash\": \"0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63\",\n               \"hash_type\": \"type\"\n             },\n             \"type\": null\n           },\n           \"output_data\": \"0x\",\n           \"tx_index\": \"0x2\"\n         }\n       ]\n     },\n     \"id\": 2\n }\n ```\n\n * get cells by lock script and filter capacity range\n\n Request\n\n ```json\n {\n     \"id\": 2,\n     \"jsonrpc\": \"2.0\",\n     \"method\": \"get_cells\",\n     \"params\": [\n         {\n             \"script\": {\n                 \"code_hash\": \"0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8\",\n                 \"hash_type\": \"type\",\n                 \"args\": \"0x5989ae415bb667931a99896e5fbbfad9ba53a223\"\n             },\n             \"script_type\": \"lock\",\n             \"filter\": {\n                 \"output_capacity_range\": [\"0x0\", \"0x174876e801\"]\n             }\n         },\n         \"asc\",\n         \"0x64\"\n     ]\n }\n ```\n\n Response\n\n ```json\n {\n     \"jsonrpc\": \"2.0\",\n     \"result\": {\n       \"last_cursor\": \"0x409bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8015989ae415bb667931a99896e5fbbfad9ba53a22300000000005b59df0000000100000001\",\n       \"objects\": [\n         {\n           \"block_number\": \"0x5b59df\",\n           \"out_point\": {\n             \"index\": \"0x1\",\n             \"tx_hash\": \"0x21c4632a41140b828e9347ff80480b3e07be4e0a0b8d577565e7421fd5473194\"\n           },\n           \"output\": {\n             \"capacity\": \"0xe815b81c0\",\n             \"lock\": {\n               \"args\": \"0x5989ae415bb667931a99896e5fbbfad9ba53a223\",\n               \"code_hash\": \"0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8\",\n               \"hash_type\": \"type\"\n             },\n             \"type\": null\n           },\n           \"output_data\": \"0x\",\n           \"tx_index\": \"0x1\"\n         }\n       ]\n     },\n     \"id\": 2\n }\n ```",
       "name": "get_cells",
       "params": [
         {
@@ -631,7 +1356,7 @@
       "result": {
         "name": "get_cells",
         "schema": {
-          "$ref": "#/components/schemas/IndexerPagination_for_IndexerCell"
+          "$ref": "#/components/schemas/IndexerPagination"
         }
       }
     },
@@ -674,7 +1399,7 @@
       "result": {
         "name": "get_transactions",
         "schema": {
-          "$ref": "#/components/schemas/IndexerPagination_for_IndexerTx"
+          "$ref": "#/components/schemas/IndexerPagination2"
         }
       }
     },

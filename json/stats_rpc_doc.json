@@ -5,7 +5,11 @@
         "description": "An alert sent by RPC `send_alert`.",
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/Uint32",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint32"
+              }
+            ],
             "description": "The unique alert ID."
           },
           "message": {
@@ -13,19 +17,27 @@
             "type": "string"
           },
           "notice_until": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "The alert is expired after this timestamp."
           },
           "priority": {
-            "$ref": "#/components/schemas/Uint32",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint32"
+              }
+            ],
             "description": "Alerts are sorted by priority, highest first."
           }
         },
         "required": [
           "id",
-          "message",
+          "priority",
           "notice_until",
-          "priority"
+          "message"
         ],
         "type": "object"
       },
@@ -49,25 +61,33 @@
             "type": "string"
           },
           "epoch": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "The epoch information of tip block in the chain."
           },
           "is_initial_block_download": {
-            "description": "Whether the local node is in IBD, Initial Block Download.\n\nWhen a node starts and its chain tip timestamp is far behind the wall clock, it will enter the IBD until it catches up the synchronization.\n\nDuring IBD, the local node only synchronizes the chain with one selected remote node and stops responding the most P2P requests.",
+            "description": "Whether the local node is in IBD, Initial Block Download.\n\nWhen a node starts and its chain tip timestamp is far behind the wall clock, it will enter\nthe IBD until it catches up the synchronization.\n\nDuring IBD, the local node only synchronizes the chain with one selected remote node and\nstops responding the most P2P requests.",
             "type": "boolean"
           },
           "median_time": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "The median time of the last 37 blocks, including the tip block."
           }
         },
         "required": [
-          "alerts",
           "chain",
-          "difficulty",
+          "median_time",
           "epoch",
+          "difficulty",
           "is_initial_block_download",
-          "median_time"
+          "alerts"
         ],
         "type": "object"
       },
@@ -75,49 +95,78 @@
         "description": "An object containing various state info regarding deployments of consensus changes",
         "properties": {
           "bit": {
-            "description": "determines which bit in the `version` field of the block is to be used to signal the softfork lock-in and activation. It is chosen from the set {0,1,2,...,28}.",
+            "description": "determines which bit in the `version` field of the block is to be used to signal the softfork lock-in and activation.\nIt is chosen from the set {0,1,2,...,28}.",
             "format": "uint8",
-            "minimum": 0.0,
+            "maximum": 255,
+            "minimum": 0,
             "type": "integer"
           },
           "min_activation_epoch": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "specifies the epoch at which the softfork is allowed to become active."
           },
           "period": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "the length in epochs of the signalling period"
           },
           "since": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "The first epoch which the current state applies"
           },
           "start": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "specifies the first epoch in which the bit gains meaning."
           },
           "state": {
-            "$ref": "#/components/schemas/DeploymentState",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DeploymentState"
+              }
+            ],
             "description": "With each epoch and softfork, we associate a deployment state. The possible states are:\n\n* `DEFINED` is the first state that each softfork starts. The blocks of 0 epoch is by definition in this state for each deployment.\n* `STARTED` for all blocks reach or past the start_epoch.\n* `LOCKED_IN` for one period after the first period with STARTED blocks of which at least threshold has the associated bit set in version.\n* `ACTIVE` for all blocks after the LOCKED_IN period.\n* `FAILED` for all blocks after the timeout_epoch, if LOCKED_IN was not reached."
           },
           "threshold": {
-            "$ref": "#/components/schemas/Ratio",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Ratio"
+              }
+            ],
             "description": "the ratio of blocks with the version bit set required to activate the feature"
           },
           "timeout": {
-            "$ref": "#/components/schemas/Uint64",
-            "description": "specifies an epoch at which the miner signaling ends. Once this epoch has been reached, if the softfork has not yet locked_in (excluding this epoch block's bit state), the deployment is considered failed on all descendants of the block."
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
+            "description": "specifies an epoch at which the miner signaling ends.\nOnce this epoch has been reached,\nif the softfork has not yet locked_in (excluding this epoch block's bit state),\nthe deployment is considered failed on all descendants of the block."
           }
         },
         "required": [
           "bit",
+          "start",
+          "timeout",
           "min_activation_epoch",
           "period",
-          "since",
-          "start",
-          "state",
           "threshold",
-          "timeout"
+          "since",
+          "state"
         ],
         "type": "object"
       },
@@ -125,38 +174,28 @@
         "description": "The possible softfork deployment state",
         "oneOf": [
           {
-            "description": "First state that each softfork starts. The 0 epoch is by definition in this state for each deployment.",
-            "enum": [
-              "defined"
-            ],
+            "const": "defined",
+            "description": "First state that each softfork starts.\nThe 0 epoch is by definition in this state for each deployment.",
             "type": "string"
           },
           {
+            "const": "started",
             "description": "For epochs past the `start` epoch.",
-            "enum": [
-              "started"
-            ],
             "type": "string"
           },
           {
-            "description": "For one epoch after the first epoch period with STARTED epochs of which at least `threshold` has the associated bit set in `version`.",
-            "enum": [
-              "locked_in"
-            ],
+            "const": "locked_in",
+            "description": "For one epoch after the first epoch period with STARTED epochs of\nwhich at least `threshold` has the associated bit set in `version`.",
             "type": "string"
           },
           {
+            "const": "active",
             "description": "For all epochs after the LOCKED_IN epoch.",
-            "enum": [
-              "active"
-            ],
             "type": "string"
           },
           {
+            "const": "failed",
             "description": "For one epoch period past the `timeout_epoch`, if LOCKED_IN was not reached.",
-            "enum": [
-              "failed"
-            ],
             "type": "string"
           }
         ]
@@ -168,22 +207,30 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/DeploymentInfo"
             },
-            "description": "`{ [ key:` [`DeploymentPos`](#type-deploymentpos) `]: ` [`DeploymentInfo`](#type-deploymentinfo) `}` deployments info",
+            "description": "`{ [ key:` [`DeploymentPos`](#type-deploymentpos) `]: ` [`DeploymentInfo`](#type-deploymentinfo) `}`\ndeployments info",
             "type": "object"
           },
           "epoch": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "requested block epoch"
           },
           "hash": {
-            "$ref": "#/components/schemas/H256",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/H256"
+              }
+            ],
             "description": "requested block hash"
           }
         },
         "required": [
-          "deployments",
+          "hash",
           "epoch",
-          "hash"
+          "deployments"
         ],
         "type": "object"
       },
@@ -191,7 +238,8 @@
         "description": "The 32-byte fixed-length binary data.\n\nThe name comes from the number of bits in the data.\n\nIn JSONRPC, it is encoded as a 0x-prefixed hex string.",
         "items": {
           "format": "uint8",
-          "minimum": 0.0,
+          "maximum": 255,
+          "minimum": 0,
           "type": "integer"
         },
         "maxItems": 32,
@@ -199,31 +247,39 @@
         "type": "array"
       },
       "Ratio": {
-        "description": "Represents the ratio `numerator / denominator`, where `numerator` and `denominator` are both unsigned 64-bit integers.",
+        "description": "Represents the ratio `numerator / denominator`, where `numerator` and `denominator` are both\nunsigned 64-bit integers.",
         "properties": {
           "denom": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "Denominator."
           },
           "numer": {
-            "$ref": "#/components/schemas/Uint64",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uint64"
+              }
+            ],
             "description": "Numerator."
           }
         },
         "required": [
-          "denom",
-          "numer"
+          "numer",
+          "denom"
         ],
         "type": "object"
       },
       "Uint32": {
         "format": "uint32",
-        "minimum": 0.0,
+        "minimum": 0,
         "type": "integer"
       },
       "Uint64": {
         "format": "uint64",
-        "minimum": 0.0,
+        "minimum": 0,
         "type": "integer"
       }
     }
@@ -231,7 +287,7 @@
   "info": {
     "description": " RPC Module Stats for getting various statistic data.",
     "title": "stats_rpc",
-    "version": "0.115.0-pre"
+    "version": "0.204.0"
   },
   "methods": [
     {
